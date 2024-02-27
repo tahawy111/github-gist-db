@@ -36,7 +36,29 @@ type SchemaType<T> = {
     : T[K] extends "BigInt"
     ? bigint
     : any; // Default to 'any' for other types
-} & { id: "uuid" };
+} & { id?: string };
+
+type SchemaTypeForQuery<T> = {
+  [K in keyof T]?: T[K] extends "String"
+    ? string
+    : T[K] extends "Number"
+    ? number
+    : T[K] extends "Boolean"
+    ? boolean
+    : T[K] extends "Object"
+    ? Object
+    : T[K] extends "Array"
+    ? Array<any>
+    : T[K] extends "Undefined"
+    ? undefined
+    : T[K] extends "Null"
+    ? null
+    : T[K] extends "Symbol"
+    ? Symbol
+    : T[K] extends "BigInt"
+    ? bigint
+    : any; // Default to 'any' for other types
+} & { id?: string };
 
 class DB<T extends SchemaTypes> {
   // Properties
@@ -140,6 +162,92 @@ class DB<T extends SchemaTypes> {
       return res.data;
     }
   }
+
+  async findFirst(query: SchemaTypeForQuery<T>) {
+    const res = await axios.get(`${this.url}/${this.gistId}`, {
+      headers: {
+        Authorization: `Bearer ${this.githubToken}`,
+      },
+    });
+
+    const list: SchemaType<T>[] = JSON.parse(
+      res.data.files["test.productSchema.json"].content
+    );
+
+    return list.find((item) => {
+      for (let key in query) {
+        if (item[key] !== query[key]) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+  async findMany(query?: SchemaTypeForQuery<T>) {
+    const res = await axios.get(`${this.url}/${this.gistId}`, {
+      headers: {
+        Authorization: `Bearer ${this.githubToken}`,
+      },
+    });
+
+    const list: SchemaType<T>[] = JSON.parse(
+      res.data.files["test.productSchema.json"].content
+    );
+
+    if (query) {
+      return list.filter((item) => {
+        for (let key in query) {
+          if (item[key] !== query[key]) {
+            return false;
+          }
+        }
+        return true;
+      });
+    } else {
+      return list;
+    }
+  }
+  async findByIdAndUpdate(id: string, query: SchemaTypeForQuery<T>) {
+    const res = await axios.get(`${this.url}/${this.gistId}`, {
+      headers: {
+        Authorization: `Bearer ${this.githubToken}`,
+      },
+    });
+
+    const list: SchemaType<T>[] = JSON.parse(
+      res.data.files["test.productSchema.json"].content
+    );
+
+    list.forEach((item: any) => {
+      if (item.id === id) {
+        for (let key in query) {
+          item[key] = (query as Record<string, any>)[key];
+        }
+      }
+    });
+
+    const update = await axios.patch(
+      `${this.url}/${this.gistId}`,
+      {
+        files: {
+          [`${this.projectName}.${this.schemaName}.json`]: {
+            content: `${JSON.stringify(list)}`,
+          },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.githubToken}`,
+        },
+      }
+    );
+
+    const updatedList: SchemaType<T>[] = JSON.parse(
+      update.data.files["test.productSchema.json"].content
+    );
+
+    return updatedList;
+  }
 }
 
 const productSchema = new DB(
@@ -157,11 +265,19 @@ const productSchema = new DB(
 );
 
 (async () => {
-  const product = await productSchema.create({
-    id: "uuid",
-    name: "Product Name",
-    price: 100,
-  });
+  // const product = await productSchema.create({
+  //   name: "Product Name",
+  //   price: 100,
+  // });
 
-  console.log(product);
+  // console.log(product);
+
+  console.log(
+    await productSchema.findByIdAndUpdate(
+      "33f3ca80-84bb-43f1-9914-97f0d19477e1",
+      { name: "mouse", price: 55 }
+    )
+  );
 })();
+
+export default DB;
