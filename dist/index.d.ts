@@ -29,6 +29,7 @@ declare class DB<T extends SchemaTypes> {
     create(payload: SchemaType<T>): Promise<any>;
     findFirst(query: SchemaTypeForQuery<T>): Promise<SchemaType<T> | undefined>;
     findMany(query?: SchemaTypeForQuery<T>): Promise<SchemaType<T>[]>;
-    findByIdAndUpdate(id: string, query: SchemaTypeForQuery<T>): Promise<SchemaType<T>[]>;
+    findByIdAndUpdate(id: string, query: SchemaTypeForQuery<T>): Promise<SchemaType<T>>;
+    findOneAndUpdate(searchQuery: SchemaTypeForQuery<T>, query: SchemaTypeForQuery<T>): Promise<SchemaType<T>>;
 }
 export default DB;

@@ -115,7 +115,7 @@ class DB<T extends SchemaTypes> {
       });
 
       const list: SchemaType<T>[] = JSON.parse(
-        res.data.files["test.productSchema.json"].content
+        res.data.files[`${this.projectName}.${this.schemaName}.json`].content
       );
 
       list.push(reqPayload);
@@ -218,10 +218,64 @@ class DB<T extends SchemaTypes> {
       res.data.files["test.productSchema.json"].content
     );
 
-    list.forEach((item: any) => {
+    let updatedIndex = 0;
+
+    list.forEach((item: any, index) => {
       if (item.id === id) {
+        updatedIndex = index;
         for (let key in query) {
           item[key] = (query as Record<string, any>)[key];
+        }
+        item.updatedAt = new Date().toISOString();
+      }
+    });
+
+    const update = await axios.patch(
+      `${this.url}/${this.gistId}`,
+      {
+        files: {
+          [`${this.projectName}.${this.schemaName}.json`]: {
+            content: `${JSON.stringify(list)}`,
+          },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.githubToken}`,
+        },
+      }
+    );
+
+    const updatedList: SchemaType<T>[] = JSON.parse(
+      update.data.files["test.productSchema.json"].content
+    );
+
+    return updatedList[updatedIndex];
+  }
+  async findOneAndUpdate(
+    searchQuery: SchemaTypeForQuery<T>,
+    query: SchemaTypeForQuery<T>
+  ) {
+    const res = await axios.get(`${this.url}/${this.gistId}`, {
+      headers: {
+        Authorization: `Bearer ${this.githubToken}`,
+      },
+    });
+
+    const list: SchemaType<T>[] = JSON.parse(
+      res.data.files["test.productSchema.json"].content
+    );
+
+    let updatedIndex = 0;
+
+    list.forEach((item: any, index) => {
+      for (let key in searchQuery) {
+        if (item[key] === searchQuery[key]) {
+          updatedIndex = index;
+          for (let key in query) {
+            item[key] = (query as Record<string, any>)[key];
+          }
+          item.updatedAt = new Date().toISOString();
         }
       }
     });
@@ -246,7 +300,7 @@ class DB<T extends SchemaTypes> {
       update.data.files["test.productSchema.json"].content
     );
 
-    return updatedList;
+    return updatedList[updatedIndex];
   }
 }
 
@@ -266,16 +320,22 @@ const productSchema = new DB(
 
 (async () => {
   // const product = await productSchema.create({
-  //   name: "Product Name",
+  //   name: "mouse",
   //   price: 100,
   // });
 
   // console.log(product);
 
+  // console.log(
+  //   await productSchema.findByIdAndUpdate(
+  //     "33f3ca80-84bb-43f1-9914-97f0d19477e1",
+  //     { name: "mouse", price: 55 }
+  //   )
+  // );
   console.log(
-    await productSchema.findByIdAndUpdate(
-      "33f3ca80-84bb-43f1-9914-97f0d19477e1",
-      { name: "mouse", price: 55 }
+    await productSchema.findOneAndUpdate(
+      { name:"headphone 2" },
+      { name: "headphone 3" }
     )
   );
 })();
