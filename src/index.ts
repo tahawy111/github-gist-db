@@ -196,7 +196,6 @@ class DB<T extends SchemaTypes> {
       this.handleAPIError(error);
     }
   }
-
   async findFirst(query: SchemaTypeForQuery<T>) {
     const res = await axios.get(`${this.url}/${this.gistId}`, {
       headers: {
