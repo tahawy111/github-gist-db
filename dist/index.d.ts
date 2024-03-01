@@ -6,19 +6,15 @@ type SchemaType<T> = {
 } & {
     id?: string;
 };
-type SchemaTypeForQuery<T> = {
-    [K in keyof T]?: T[K] extends "String" ? string : T[K] extends "Number" ? number : T[K] extends "Boolean" ? boolean : T[K] extends "Object" ? Object : T[K] extends "Array" ? Array<any> : T[K] extends "Undefined" ? undefined : T[K] extends "Null" ? null : T[K] extends "Symbol" ? Symbol : T[K] extends "BigInt" ? bigint : any;
-} & {
-    id?: string;
-};
+type SchemaTypeForQuery<T> = Partial<SchemaType<T>>;
 declare class DB<T extends SchemaTypes> {
-    private url;
-    schema: T;
-    schemaName: string;
-    projectName: string;
-    gistId?: string;
-    timeStamps?: boolean;
-    githubToken: string;
+    private readonly url;
+    private readonly schema;
+    private readonly schemaName;
+    private readonly projectName;
+    private readonly gistId?;
+    private readonly timeStamps?;
+    private readonly githubToken;
     constructor(schema: T, { schemaName, projectName, gistId, timeStamps, githubToken, }: {
         schemaName: string;
         projectName: string;
@@ -26,6 +22,9 @@ declare class DB<T extends SchemaTypes> {
         timeStamps?: boolean;
         githubToken: string;
     });
+    private handleAPIError;
+    private fetchGistData;
+    private updateGistContent;
     create(payload: SchemaType<T>): Promise<any>;
     findFirst(query: SchemaTypeForQuery<T>): Promise<SchemaType<T> | undefined>;
     findMany(query?: SchemaTypeForQuery<T>): Promise<SchemaType<T>[]>;

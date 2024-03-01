@@ -12,14 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// Import necessary libraries
 const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const crypto_1 = __importDefault(require("crypto"));
+// Load environment variables
 dotenv_1.default.config();
+// Define constants
+const GIST_URL = "https://api.github.com/gists";
 class DB {
     // Constructor
     constructor(schema, { schemaName, projectName, gistId, timeStamps, githubToken, }) {
-        // Properties
-        this.url = "https://api.github.com/gists";
+        this.url = GIST_URL;
         this.schema = schema;
         this.schemaName = schemaName;
         this.projectName = projectName;
@@ -27,54 +31,101 @@ class DB {
         this.timeStamps = timeStamps;
         this.githubToken = githubToken;
     }
-    create(payload) {
+    // Helper function to handle API errors
+    handleAPIError(error) {
+        if (error.response) {
+            console.error("API Error:", error.response.data);
+            console.error("Status:", error.response.status);
+        }
+        else {
+            console.error("Error:", error.message);
+        }
+        throw error; // Rethrow the error for the caller to handle
+    }
+    // Helper function to fetch data from Gist
+    fetchGistData() {
         return __awaiter(this, void 0, void 0, function* () {
-            let reqPayload = Object.assign(Object.assign({}, payload), { id: crypto.randomUUID() });
-            if (this.timeStamps) {
-                reqPayload.createdAt = new Date().toISOString();
-                reqPayload.updatedAt = new Date().toISOString();
-            }
-            if (this.gistId) {
-                // get and push
-                const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
+            try {
+                const response = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
                     headers: {
                         Authorization: `Bearer ${this.githubToken}`,
                     },
                 });
-                const list = JSON.parse(res.data.files[`${this.projectName}.${this.schemaName}.json`].content);
-                list.push(reqPayload);
-                const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
+                return response.data;
+            }
+            catch (error) {
+                this.handleAPIError(error);
+            }
+        });
+    }
+    // Helper function to update Gist content
+    updateGistContent(content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
                     files: {
-                        [`${this.projectName}.${this.schemaName}.json`]: {
-                            content: `${JSON.stringify(list)}`,
-                        },
+                        [`${this.projectName}.${this.schemaName}.json`]: { content },
                     },
                 }, {
                     headers: {
                         Authorization: `Bearer ${this.githubToken}`,
                     },
                 });
-                return update.data;
             }
-            else {
-                // create first object inside and array
-                const res = yield axios_1.default.post(`${this.url}`, {
-                    description: `
+            catch (error) {
+                this.handleAPIError(error);
+            }
+        });
+    }
+    create(payload) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let reqPayload = Object.assign(Object.assign({}, payload), { id: crypto_1.default.randomUUID() });
+                if (this.timeStamps) {
+                    reqPayload.createdAt = new Date().toISOString();
+                    reqPayload.updatedAt = new Date().toISOString();
+                }
+                if (this.gistId) {
+                    // get and push
+                    const data = yield this.fetchGistData();
+                    const list = JSON.parse(data.files[`${this.projectName}.${this.schemaName}.json`].content);
+                    list.push(reqPayload);
+                    const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
+                        files: {
+                            [`${this.projectName}.${this.schemaName}.json`]: {
+                                content: `${JSON.stringify(list)}`,
+                            },
+                        },
+                    }, {
+                        headers: {
+                            Authorization: `Bearer ${this.githubToken}`,
+                        },
+                    });
+                    return update.data;
+                }
+                else {
+                    // create first object inside and array
+                    const res = yield axios_1.default.post(`${this.url}`, {
+                        description: `
           Project: ${this.projectName}
           && Schema: ${this.schemaName}
           `,
-                    public: false,
-                    files: {
-                        [`${this.projectName}.${this.schemaName}.json`]: {
-                            content: `[${JSON.stringify(reqPayload)}]`,
+                        public: false,
+                        files: {
+                            [`${this.projectName}.${this.schemaName}.json`]: {
+                                content: `[${JSON.stringify(reqPayload)}]`,
+                            },
                         },
-                    },
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${this.githubToken}`,
-                    },
-                });
-                return res.data;
+                    }, {
+                        headers: {
+                            Authorization: `Bearer ${this.githubToken}`,
+                        },
+                    });
+                    return res.data;
+                }
+            }
+            catch (error) {
+                this.handleAPIError(error);
             }
         });
     }
@@ -253,10 +304,10 @@ const productSchema = new DB({
     timeStamps: true,
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    // const product = await productSchema.create({
-    //   name: "mouse",
-    //   price: 100,
-    // });
+    const product = yield productSchema.create({
+        name: "mouse",
+        price: 100,
+    });
     // console.log(product);
     // console.log(
     //   await productSchema.findByIdAndUpdate(
@@ -264,8 +315,10 @@ const productSchema = new DB({
     //     { name: "mouse", price: 55 }
     //   )
     // );
-    console.log(yield productSchema.findOneAndDelete({
-        name: "mouse",
-    }));
+    // console.log(
+    //   await productSchema.findOneAndDelete({
+    //     name: "mouse",
+    //   })
+    // );
 }))();
 exports.default = DB;

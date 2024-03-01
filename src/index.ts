@@ -1,8 +1,15 @@
-import axios from "axios";
+// Import necessary libraries
+import axios, { AxiosError } from "axios";
 import dotenv from "dotenv";
+import crypto from "crypto";
 
+// Load environment variables
 dotenv.config();
 
+// Define constants
+const GIST_URL = "https://api.github.com/gists";
+
+// Define types and interfaces
 interface SchemaTypes {
   [key: string]:
     | "String"
@@ -38,37 +45,17 @@ type SchemaType<T> = {
     : any; // Default to 'any' for other types
 } & { id?: string };
 
-type SchemaTypeForQuery<T> = {
-  [K in keyof T]?: T[K] extends "String"
-    ? string
-    : T[K] extends "Number"
-    ? number
-    : T[K] extends "Boolean"
-    ? boolean
-    : T[K] extends "Object"
-    ? Object
-    : T[K] extends "Array"
-    ? Array<any>
-    : T[K] extends "Undefined"
-    ? undefined
-    : T[K] extends "Null"
-    ? null
-    : T[K] extends "Symbol"
-    ? Symbol
-    : T[K] extends "BigInt"
-    ? bigint
-    : any; // Default to 'any' for other types
-} & { id?: string };
+type SchemaTypeForQuery<T> = Partial<SchemaType<T>>;
 
 class DB<T extends SchemaTypes> {
   // Properties
-  private url = "https://api.github.com/gists";
-  schema: T;
-  schemaName: string;
-  projectName: string;
-  gistId?: string;
-  timeStamps?: boolean;
-  githubToken: string;
+  private readonly url: string;
+  private readonly schema: T;
+  private readonly schemaName: string;
+  private readonly projectName: string;
+  private readonly gistId?: string;
+  private readonly timeStamps?: boolean;
+  private readonly githubToken: string;
 
   // Constructor
   constructor(
@@ -87,6 +74,7 @@ class DB<T extends SchemaTypes> {
       githubToken: string;
     }
   ) {
+    this.url = GIST_URL;
     this.schema = schema;
     this.schemaName = schemaName;
     this.projectName = projectName;
@@ -95,38 +83,39 @@ class DB<T extends SchemaTypes> {
     this.githubToken = githubToken;
   }
 
-  async create(payload: SchemaType<T>) {
-    let reqPayload: any = {
-      ...payload,
-      id: crypto.randomUUID(),
-    };
-
-    if (this.timeStamps) {
-      reqPayload.createdAt = new Date().toISOString();
-      reqPayload.updatedAt = new Date().toISOString();
+  // Helper function to handle API errors
+  private handleAPIError(error: AxiosError) {
+    if (error.response) {
+      console.error("API Error:", error.response.data);
+      console.error("Status:", error.response.status);
+    } else {
+      console.error("Error:", error.message);
     }
+    throw error; // Rethrow the error for the caller to handle
+  }
 
-    if (this.gistId) {
-      // get and push
-      const res = await axios.get(`${this.url}/${this.gistId}`, {
+  // Helper function to fetch data from Gist
+  private async fetchGistData() {
+    try {
+      const response = await axios.get(`${this.url}/${this.gistId}`, {
         headers: {
           Authorization: `Bearer ${this.githubToken}`,
         },
       });
+      return response.data;
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
+  }
 
-      const list: SchemaType<T>[] = JSON.parse(
-        res.data.files[`${this.projectName}.${this.schemaName}.json`].content
-      );
-
-      list.push(reqPayload);
-
-      const update = await axios.patch(
+  // Helper function to update Gist content
+  private async updateGistContent(content: string) {
+    try {
+      await axios.patch(
         `${this.url}/${this.gistId}`,
         {
           files: {
-            [`${this.projectName}.${this.schemaName}.json`]: {
-              content: `${JSON.stringify(list)}`,
-            },
+            [`${this.projectName}.${this.schemaName}.json`]: { content },
           },
         },
         {
@@ -135,31 +124,76 @@ class DB<T extends SchemaTypes> {
           },
         }
       );
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
+  }
 
-      return update.data;
-    } else {
-      // create first object inside and array
-      const res = await axios.post(
-        `${this.url}`,
-        {
-          description: `
+  async create(payload: SchemaType<T>) {
+    try {
+      let reqPayload: any = {
+        ...payload,
+        id: crypto.randomUUID(),
+      };
+
+      if (this.timeStamps) {
+        reqPayload.createdAt = new Date().toISOString();
+        reqPayload.updatedAt = new Date().toISOString();
+      }
+
+      if (this.gistId) {
+        // get and push
+        const data = await this.fetchGistData();
+
+        const list: SchemaType<T>[] = JSON.parse(
+          data.files[`${this.projectName}.${this.schemaName}.json`].content
+        );
+
+        list.push(reqPayload);
+
+        const update = await axios.patch(
+          `${this.url}/${this.gistId}`,
+          {
+            files: {
+              [`${this.projectName}.${this.schemaName}.json`]: {
+                content: `${JSON.stringify(list)}`,
+              },
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.githubToken}`,
+            },
+          }
+        );
+
+        return update.data;
+      } else {
+        // create first object inside and array
+        const res = await axios.post(
+          `${this.url}`,
+          {
+            description: `
           Project: ${this.projectName}
           && Schema: ${this.schemaName}
           `,
-          public: false,
-          files: {
-            [`${this.projectName}.${this.schemaName}.json`]: {
-              content: `[${JSON.stringify(reqPayload)}]`,
+            public: false,
+            files: {
+              [`${this.projectName}.${this.schemaName}.json`]: {
+                content: `[${JSON.stringify(reqPayload)}]`,
+              },
             },
           },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${this.githubToken}`,
-          },
-        }
-      );
-      return res.data;
+          {
+            headers: {
+              Authorization: `Bearer ${this.githubToken}`,
+            },
+          }
+        );
+        return res.data;
+      }
+    } catch (error: any) {
+      this.handleAPIError(error);
     }
   }
 
@@ -391,10 +425,10 @@ const productSchema = new DB(
 );
 
 (async () => {
-  // const product = await productSchema.create({
-  //   name: "mouse",
-  //   price: 100,
-  // });
+  const product = await productSchema.create({
+    name: "mouse",
+    price: 100,
+  });
 
   // console.log(product);
 
@@ -404,11 +438,11 @@ const productSchema = new DB(
   //     { name: "mouse", price: 55 }
   //   )
   // );
-  console.log(
-    await productSchema.findOneAndDelete({
-      name: "mouse",
-    })
-  );
+  // console.log(
+  //   await productSchema.findOneAndDelete({
+  //     name: "mouse",
+  //   })
+  // );
 })();
 
 export default DB;
