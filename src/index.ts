@@ -302,6 +302,78 @@ class DB<T extends SchemaTypes> {
 
     return updatedList[updatedIndex];
   }
+  async findByIdAndDelete(id: string) {
+    const res = await axios.get(`${this.url}/${this.gistId}`, {
+      headers: {
+        Authorization: `Bearer ${this.githubToken}`,
+      },
+    });
+
+    const list: SchemaType<T>[] = JSON.parse(
+      res.data.files["test.productSchema.json"].content
+    );
+
+    let updatedIndex = 0;
+
+    const deleted = list.filter((item) => item.id !== id);
+
+    const update = await axios.patch(
+      `${this.url}/${this.gistId}`,
+      {
+        files: {
+          [`${this.projectName}.${this.schemaName}.json`]: {
+            content: `${JSON.stringify(deleted)}`,
+          },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.githubToken}`,
+        },
+      }
+    );
+
+    // const updatedList: SchemaType<T>[] = JSON.parse(
+    //   update.data.files["test.productSchema.json"].content
+    // );
+
+    return "Ok";
+  }
+  async findOneAndDelete(searchQuery: SchemaTypeForQuery<T>) {
+    const res = await axios.get(`${this.url}/${this.gistId}`, {
+      headers: {
+        Authorization: `Bearer ${this.githubToken}`,
+      },
+    });
+
+    const list: SchemaType<T>[] = JSON.parse(
+      res.data.files["test.productSchema.json"].content
+    );
+
+    const deleted = list.filter((item) => {
+      for (let key in searchQuery) {
+        return item[key] !== searchQuery[key];
+      }
+    });
+
+    const update = await axios.patch(
+      `${this.url}/${this.gistId}`,
+      {
+        files: {
+          [`${this.projectName}.${this.schemaName}.json`]: {
+            content: `${JSON.stringify(deleted)}`,
+          },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.githubToken}`,
+        },
+      }
+    );
+
+    return "Ok";
+  }
 }
 
 const productSchema = new DB(
@@ -333,10 +405,9 @@ const productSchema = new DB(
   //   )
   // );
   console.log(
-    await productSchema.findOneAndUpdate(
-      { name:"headphone 2" },
-      { name: "headphone 3" }
-    )
+    await productSchema.findOneAndDelete({
+      name: "mouse",
+    })
   );
 })();
 

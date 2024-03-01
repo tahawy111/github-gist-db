@@ -187,6 +187,60 @@ class DB {
             return updatedList[updatedIndex];
         });
     }
+    findByIdAndDelete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
+                headers: {
+                    Authorization: `Bearer ${this.githubToken}`,
+                },
+            });
+            const list = JSON.parse(res.data.files["test.productSchema.json"].content);
+            let updatedIndex = 0;
+            const deleted = list.filter((item) => item.id !== id);
+            const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
+                files: {
+                    [`${this.projectName}.${this.schemaName}.json`]: {
+                        content: `${JSON.stringify(deleted)}`,
+                    },
+                },
+            }, {
+                headers: {
+                    Authorization: `Bearer ${this.githubToken}`,
+                },
+            });
+            // const updatedList: SchemaType<T>[] = JSON.parse(
+            //   update.data.files["test.productSchema.json"].content
+            // );
+            return "Ok";
+        });
+    }
+    findOneAndDelete(searchQuery) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
+                headers: {
+                    Authorization: `Bearer ${this.githubToken}`,
+                },
+            });
+            const list = JSON.parse(res.data.files["test.productSchema.json"].content);
+            const deleted = list.filter((item) => {
+                for (let key in searchQuery) {
+                    return item[key] !== searchQuery[key];
+                }
+            });
+            const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
+                files: {
+                    [`${this.projectName}.${this.schemaName}.json`]: {
+                        content: `${JSON.stringify(deleted)}`,
+                    },
+                },
+            }, {
+                headers: {
+                    Authorization: `Bearer ${this.githubToken}`,
+                },
+            });
+            return "Ok";
+        });
+    }
 }
 const productSchema = new DB({
     name: "String",
@@ -210,6 +264,8 @@ const productSchema = new DB({
     //     { name: "mouse", price: 55 }
     //   )
     // );
-    console.log(yield productSchema.findOneAndUpdate({ name: "headphone 2" }, { name: "headphone 3" }));
+    console.log(yield productSchema.findOneAndDelete({
+        name: "mouse",
+    }));
 }))();
 exports.default = DB;

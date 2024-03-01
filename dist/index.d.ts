@@ -31,5 +31,7 @@ declare class DB<T extends SchemaTypes> {
     findMany(query?: SchemaTypeForQuery<T>): Promise<SchemaType<T>[]>;
     findByIdAndUpdate(id: string, query: SchemaTypeForQuery<T>): Promise<SchemaType<T>>;
     findOneAndUpdate(searchQuery: SchemaTypeForQuery<T>, query: SchemaTypeForQuery<T>): Promise<SchemaType<T>>;
+    findByIdAndDelete(id: string): Promise<string>;
+    findOneAndDelete(searchQuery: SchemaTypeForQuery<T>): Promise<string>;
 }
 export default DB;
