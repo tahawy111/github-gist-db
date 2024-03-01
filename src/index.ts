@@ -111,7 +111,7 @@ class DB<T extends SchemaTypes> {
   // Helper function to update Gist content
   private async updateGistContent(content: string) {
     try {
-      await axios.patch(
+      const response = await axios.patch(
         `${this.url}/${this.gistId}`,
         {
           files: {
@@ -124,9 +124,18 @@ class DB<T extends SchemaTypes> {
           },
         }
       );
+
+      return response.data;
     } catch (error: any) {
       this.handleAPIError(error);
     }
+  }
+
+  private getList(data: any): SchemaType<T>[] {
+    const list: SchemaType<T>[] = JSON.parse(
+      data.files[`${this.projectName}.${this.schemaName}.json`].content
+    );
+    return list;
   }
 
   async create(payload: SchemaType<T>) {
@@ -145,29 +154,15 @@ class DB<T extends SchemaTypes> {
         // get and push
         const data = await this.fetchGistData();
 
-        const list: SchemaType<T>[] = JSON.parse(
-          data.files[`${this.projectName}.${this.schemaName}.json`].content
-        );
+        const list = this.getList(data);
 
         list.push(reqPayload);
 
-        const update = await axios.patch(
-          `${this.url}/${this.gistId}`,
-          {
-            files: {
-              [`${this.projectName}.${this.schemaName}.json`]: {
-                content: `${JSON.stringify(list)}`,
-              },
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${this.githubToken}`,
-            },
-          }
+        const update = this.getList(
+          await this.updateGistContent(JSON.stringify(list))
         );
 
-        return update.data;
+        return update.find((item) => item.id === reqPayload.id);
       } else {
         // create first object inside and array
         const res = await axios.post(
@@ -197,38 +192,14 @@ class DB<T extends SchemaTypes> {
     }
   }
   async findFirst(query: SchemaTypeForQuery<T>) {
-    const res = await axios.get(`${this.url}/${this.gistId}`, {
-      headers: {
-        Authorization: `Bearer ${this.githubToken}`,
-      },
-    });
+    try {
+      const data = await this.fetchGistData();
 
-    const list: SchemaType<T>[] = JSON.parse(
-      res.data.files["test.productSchema.json"].content
-    );
+      const list: SchemaType<T>[] = JSON.parse(
+        data.files["test.productSchema.json"].content
+      );
 
-    return list.find((item) => {
-      for (let key in query) {
-        if (item[key] !== query[key]) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }
-  async findMany(query?: SchemaTypeForQuery<T>) {
-    const res = await axios.get(`${this.url}/${this.gistId}`, {
-      headers: {
-        Authorization: `Bearer ${this.githubToken}`,
-      },
-    });
-
-    const list: SchemaType<T>[] = JSON.parse(
-      res.data.files["test.productSchema.json"].content
-    );
-
-    if (query) {
-      return list.filter((item) => {
+      return list.find((item) => {
         for (let key in query) {
           if (item[key] !== query[key]) {
             return false;
@@ -236,176 +207,141 @@ class DB<T extends SchemaTypes> {
         }
         return true;
       });
-    } else {
-      return list;
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
+  }
+  async findMany(query?: SchemaTypeForQuery<T>) {
+    try {
+      const data = await this.fetchGistData();
+
+      const list: SchemaType<T>[] = JSON.parse(
+        data.files["test.productSchema.json"].content
+      );
+      if (query) {
+        return list.filter((item) => {
+          for (let key in query) {
+            if (item[key] !== query[key]) {
+              return false;
+            }
+          }
+          return true;
+        });
+      } else {
+        return list;
+      }
+    } catch (error: any) {
+      this.handleAPIError(error);
     }
   }
   async findByIdAndUpdate(id: string, query: SchemaTypeForQuery<T>) {
-    const res = await axios.get(`${this.url}/${this.gistId}`, {
-      headers: {
-        Authorization: `Bearer ${this.githubToken}`,
-      },
-    });
+    try {
+      const data = await this.fetchGistData();
 
-    const list: SchemaType<T>[] = JSON.parse(
-      res.data.files["test.productSchema.json"].content
-    );
+      const list: SchemaType<T>[] = JSON.parse(
+        data.files["test.productSchema.json"].content
+      );
 
-    let updatedIndex = 0;
+      let updatedIndex = 0;
 
-    list.forEach((item: any, index) => {
-      if (item.id === id) {
-        updatedIndex = index;
-        for (let key in query) {
-          item[key] = (query as Record<string, any>)[key];
-        }
-        item.updatedAt = new Date().toISOString();
-      }
-    });
-
-    const update = await axios.patch(
-      `${this.url}/${this.gistId}`,
-      {
-        files: {
-          [`${this.projectName}.${this.schemaName}.json`]: {
-            content: `${JSON.stringify(list)}`,
-          },
-        },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.githubToken}`,
-        },
-      }
-    );
-
-    const updatedList: SchemaType<T>[] = JSON.parse(
-      update.data.files["test.productSchema.json"].content
-    );
-
-    return updatedList[updatedIndex];
-  }
-  async findOneAndUpdate(
-    searchQuery: SchemaTypeForQuery<T>,
-    query: SchemaTypeForQuery<T>
-  ) {
-    const res = await axios.get(`${this.url}/${this.gistId}`, {
-      headers: {
-        Authorization: `Bearer ${this.githubToken}`,
-      },
-    });
-
-    const list: SchemaType<T>[] = JSON.parse(
-      res.data.files["test.productSchema.json"].content
-    );
-
-    let updatedIndex = 0;
-
-    list.forEach((item: any, index) => {
-      for (let key in searchQuery) {
-        if (item[key] === searchQuery[key]) {
+      list.forEach((item: any, index) => {
+        if (item.id === id) {
           updatedIndex = index;
           for (let key in query) {
             item[key] = (query as Record<string, any>)[key];
           }
           item.updatedAt = new Date().toISOString();
         }
-      }
-    });
+      });
 
-    const update = await axios.patch(
-      `${this.url}/${this.gistId}`,
-      {
-        files: {
-          [`${this.projectName}.${this.schemaName}.json`]: {
-            content: `${JSON.stringify(list)}`,
-          },
-        },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.githubToken}`,
-        },
-      }
-    );
+      const update = await this.updateGistContent(JSON.stringify(list));
 
-    const updatedList: SchemaType<T>[] = JSON.parse(
-      update.data.files["test.productSchema.json"].content
-    );
+      const updatedList: SchemaType<T>[] = JSON.parse(
+        update.files["test.productSchema.json"].content
+      );
 
-    return updatedList[updatedIndex];
+      return updatedList[updatedIndex];
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
+  }
+  async findOneAndUpdate(
+    searchQuery: SchemaTypeForQuery<T>,
+    query: SchemaTypeForQuery<T>
+  ) {
+    try {
+      const data = await this.fetchGistData();
+
+      const list: SchemaType<T>[] = JSON.parse(
+        data.files["test.productSchema.json"].content
+      );
+
+      let updatedIndex = 0;
+
+      list.forEach((item: any, index) => {
+        for (let key in searchQuery) {
+          if (item[key] === searchQuery[key]) {
+            updatedIndex = index;
+            for (let key in query) {
+              item[key] = (query as Record<string, any>)[key];
+            }
+            item.updatedAt = new Date().toISOString();
+          }
+        }
+      });
+
+      const update = await this.updateGistContent(JSON.stringify(list));
+
+      const updatedList: SchemaType<T>[] = JSON.parse(
+        update.files["test.productSchema.json"].content
+      );
+
+      return updatedList[updatedIndex];
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
   }
   async findByIdAndDelete(id: string) {
-    const res = await axios.get(`${this.url}/${this.gistId}`, {
-      headers: {
-        Authorization: `Bearer ${this.githubToken}`,
-      },
-    });
-
-    const list: SchemaType<T>[] = JSON.parse(
-      res.data.files["test.productSchema.json"].content
-    );
-
-    let updatedIndex = 0;
-
-    const deleted = list.filter((item) => item.id !== id);
-
-    const update = await axios.patch(
-      `${this.url}/${this.gistId}`,
-      {
-        files: {
-          [`${this.projectName}.${this.schemaName}.json`]: {
-            content: `${JSON.stringify(deleted)}`,
-          },
-        },
-      },
-      {
+    try {
+      const res = await axios.get(`${this.url}/${this.gistId}`, {
         headers: {
           Authorization: `Bearer ${this.githubToken}`,
         },
-      }
-    );
+      });
 
-    // const updatedList: SchemaType<T>[] = JSON.parse(
-    //   update.data.files["test.productSchema.json"].content
-    // );
+      const list: SchemaType<T>[] = JSON.parse(
+        res.data.files["test.productSchema.json"].content
+      );
 
-    return "Ok";
+      const deleted = list.filter((item) => item.id !== id);
+
+      await this.updateGistContent(JSON.stringify(deleted));
+
+      return "Ok";
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
   }
   async findOneAndDelete(searchQuery: SchemaTypeForQuery<T>) {
-    const res = await axios.get(`${this.url}/${this.gistId}`, {
-      headers: {
-        Authorization: `Bearer ${this.githubToken}`,
-      },
-    });
+    try {
+      const data = await this.fetchGistData();
 
-    const list: SchemaType<T>[] = JSON.parse(
-      res.data.files["test.productSchema.json"].content
-    );
+      const list: SchemaType<T>[] = JSON.parse(
+        data.files["test.productSchema.json"].content
+      );
 
-    const deleted = list.filter((item) => {
-      for (let key in searchQuery) {
-        return item[key] !== searchQuery[key];
-      }
-    });
+      const deleted = list.filter((item) => {
+        for (let key in searchQuery) {
+          return item[key] !== searchQuery[key];
+        }
+      });
 
-    const update = await axios.patch(
-      `${this.url}/${this.gistId}`,
-      {
-        files: {
-          [`${this.projectName}.${this.schemaName}.json`]: {
-            content: `${JSON.stringify(deleted)}`,
-          },
-        },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.githubToken}`,
-        },
-      }
-    );
+      await this.updateGistContent(JSON.stringify(deleted));
 
-    return "Ok";
+      return "Ok";
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
   }
 }
 
@@ -424,24 +360,22 @@ const productSchema = new DB(
 );
 
 (async () => {
-  const product = await productSchema.create({
-    name: "mouse",
-    price: 100,
-  });
+  // const product = await productSchema.create({
+  //   name: "laptop lenovo",
+  //   price: 500,
+  // });
 
   // console.log(product);
 
   // console.log(
-  //   await productSchema.findByIdAndUpdate(
-  //     "33f3ca80-84bb-43f1-9914-97f0d19477e1",
-  //     { name: "mouse", price: 55 }
+  //   await productSchema.findOneAndUpdate(
+  //     {name:"iphone 15 pro max"},
+  //     { name: "laptop Dell", price: 800 }
   //   )
   // );
-  // console.log(
-  //   await productSchema.findOneAndDelete({
-  //     name: "mouse",
-  //   })
-  // );
+  console.log(
+    await productSchema.findByIdAndDelete("33a66454-fc9a-4016-bc01-45731fc16be3")
+  );
 })();
 
 export default DB;

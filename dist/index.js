@@ -62,7 +62,7 @@ class DB {
     updateGistContent(content) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
+                const response = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
                     files: {
                         [`${this.projectName}.${this.schemaName}.json`]: { content },
                     },
@@ -71,11 +71,16 @@ class DB {
                         Authorization: `Bearer ${this.githubToken}`,
                     },
                 });
+                return response.data;
             }
             catch (error) {
                 this.handleAPIError(error);
             }
         });
+    }
+    getList(data) {
+        const list = JSON.parse(data.files[`${this.projectName}.${this.schemaName}.json`].content);
+        return list;
     }
     create(payload) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -88,20 +93,10 @@ class DB {
                 if (this.gistId) {
                     // get and push
                     const data = yield this.fetchGistData();
-                    const list = JSON.parse(data.files[`${this.projectName}.${this.schemaName}.json`].content);
+                    const list = this.getList(data);
                     list.push(reqPayload);
-                    const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
-                        files: {
-                            [`${this.projectName}.${this.schemaName}.json`]: {
-                                content: `${JSON.stringify(list)}`,
-                            },
-                        },
-                    }, {
-                        headers: {
-                            Authorization: `Bearer ${this.githubToken}`,
-                        },
-                    });
-                    return update.data;
+                    const update = this.getList(yield this.updateGistContent(JSON.stringify(list)));
+                    return update.find((item) => item.id === reqPayload.id);
                 }
                 else {
                     // create first object inside and array
@@ -131,32 +126,10 @@ class DB {
     }
     findFirst(query) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            const list = JSON.parse(res.data.files["test.productSchema.json"].content);
-            return list.find((item) => {
-                for (let key in query) {
-                    if (item[key] !== query[key]) {
-                        return false;
-                    }
-                }
-                return true;
-            });
-        });
-    }
-    findMany(query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            const list = JSON.parse(res.data.files["test.productSchema.json"].content);
-            if (query) {
-                return list.filter((item) => {
+            try {
+                const data = yield this.fetchGistData();
+                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                return list.find((item) => {
                     for (let key in query) {
                         if (item[key] !== query[key]) {
                             return false;
@@ -165,131 +138,119 @@ class DB {
                     return true;
                 });
             }
-            else {
-                return list;
+            catch (error) {
+                this.handleAPIError(error);
+            }
+        });
+    }
+    findMany(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const data = yield this.fetchGistData();
+                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                if (query) {
+                    return list.filter((item) => {
+                        for (let key in query) {
+                            if (item[key] !== query[key]) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+                }
+                else {
+                    return list;
+                }
+            }
+            catch (error) {
+                this.handleAPIError(error);
             }
         });
     }
     findByIdAndUpdate(id, query) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            const list = JSON.parse(res.data.files["test.productSchema.json"].content);
-            let updatedIndex = 0;
-            list.forEach((item, index) => {
-                if (item.id === id) {
-                    updatedIndex = index;
-                    for (let key in query) {
-                        item[key] = query[key];
-                    }
-                    item.updatedAt = new Date().toISOString();
-                }
-            });
-            const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
-                files: {
-                    [`${this.projectName}.${this.schemaName}.json`]: {
-                        content: `${JSON.stringify(list)}`,
-                    },
-                },
-            }, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            const updatedList = JSON.parse(update.data.files["test.productSchema.json"].content);
-            return updatedList[updatedIndex];
-        });
-    }
-    findOneAndUpdate(searchQuery, query) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            const list = JSON.parse(res.data.files["test.productSchema.json"].content);
-            let updatedIndex = 0;
-            list.forEach((item, index) => {
-                for (let key in searchQuery) {
-                    if (item[key] === searchQuery[key]) {
+            try {
+                const data = yield this.fetchGistData();
+                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                let updatedIndex = 0;
+                list.forEach((item, index) => {
+                    if (item.id === id) {
                         updatedIndex = index;
                         for (let key in query) {
                             item[key] = query[key];
                         }
                         item.updatedAt = new Date().toISOString();
                     }
-                }
-            });
-            const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
-                files: {
-                    [`${this.projectName}.${this.schemaName}.json`]: {
-                        content: `${JSON.stringify(list)}`,
-                    },
-                },
-            }, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            const updatedList = JSON.parse(update.data.files["test.productSchema.json"].content);
-            return updatedList[updatedIndex];
+                });
+                const update = yield this.updateGistContent(JSON.stringify(list));
+                const updatedList = JSON.parse(update.files["test.productSchema.json"].content);
+                return updatedList[updatedIndex];
+            }
+            catch (error) {
+                this.handleAPIError(error);
+            }
+        });
+    }
+    findOneAndUpdate(searchQuery, query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const data = yield this.fetchGistData();
+                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                let updatedIndex = 0;
+                list.forEach((item, index) => {
+                    for (let key in searchQuery) {
+                        if (item[key] === searchQuery[key]) {
+                            updatedIndex = index;
+                            for (let key in query) {
+                                item[key] = query[key];
+                            }
+                            item.updatedAt = new Date().toISOString();
+                        }
+                    }
+                });
+                const update = yield this.updateGistContent(JSON.stringify(list));
+                const updatedList = JSON.parse(update.files["test.productSchema.json"].content);
+                return updatedList[updatedIndex];
+            }
+            catch (error) {
+                this.handleAPIError(error);
+            }
         });
     }
     findByIdAndDelete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            const list = JSON.parse(res.data.files["test.productSchema.json"].content);
-            let updatedIndex = 0;
-            const deleted = list.filter((item) => item.id !== id);
-            const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
-                files: {
-                    [`${this.projectName}.${this.schemaName}.json`]: {
-                        content: `${JSON.stringify(deleted)}`,
+            try {
+                const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.githubToken}`,
                     },
-                },
-            }, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            // const updatedList: SchemaType<T>[] = JSON.parse(
-            //   update.data.files["test.productSchema.json"].content
-            // );
-            return "Ok";
+                });
+                const list = JSON.parse(res.data.files["test.productSchema.json"].content);
+                const deleted = list.filter((item) => item.id !== id);
+                yield this.updateGistContent(JSON.stringify(deleted));
+                return "Ok";
+            }
+            catch (error) {
+                this.handleAPIError(error);
+            }
         });
     }
     findOneAndDelete(searchQuery) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            const list = JSON.parse(res.data.files["test.productSchema.json"].content);
-            const deleted = list.filter((item) => {
-                for (let key in searchQuery) {
-                    return item[key] !== searchQuery[key];
-                }
-            });
-            const update = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
-                files: {
-                    [`${this.projectName}.${this.schemaName}.json`]: {
-                        content: `${JSON.stringify(deleted)}`,
-                    },
-                },
-            }, {
-                headers: {
-                    Authorization: `Bearer ${this.githubToken}`,
-                },
-            });
-            return "Ok";
+            try {
+                const data = yield this.fetchGistData();
+                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                const deleted = list.filter((item) => {
+                    for (let key in searchQuery) {
+                        return item[key] !== searchQuery[key];
+                    }
+                });
+                yield this.updateGistContent(JSON.stringify(deleted));
+                return "Ok";
+            }
+            catch (error) {
+                this.handleAPIError(error);
+            }
         });
     }
 }
@@ -304,21 +265,17 @@ const productSchema = new DB({
     timeStamps: true,
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    const product = yield productSchema.create({
-        name: "mouse",
-        price: 100,
-    });
+    // const product = await productSchema.create({
+    //   name: "laptop lenovo",
+    //   price: 500,
+    // });
     // console.log(product);
     // console.log(
-    //   await productSchema.findByIdAndUpdate(
-    //     "33f3ca80-84bb-43f1-9914-97f0d19477e1",
-    //     { name: "mouse", price: 55 }
+    //   await productSchema.findOneAndUpdate(
+    //     {name:"iphone 15 pro max"},
+    //     { name: "laptop Dell", price: 800 }
     //   )
     // );
-    // console.log(
-    //   await productSchema.findOneAndDelete({
-    //     name: "mouse",
-    //   })
-    // );
+    console.log(yield productSchema.findByIdAndDelete("33a66454-fc9a-4016-bc01-45731fc16be3"));
 }))();
 exports.default = DB;

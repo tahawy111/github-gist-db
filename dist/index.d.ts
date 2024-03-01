@@ -25,12 +25,13 @@ declare class DB<T extends SchemaTypes> {
     private handleAPIError;
     private fetchGistData;
     private updateGistContent;
+    private getList;
     create(payload: SchemaType<T>): Promise<any>;
     findFirst(query: SchemaTypeForQuery<T>): Promise<SchemaType<T> | undefined>;
-    findMany(query?: SchemaTypeForQuery<T>): Promise<SchemaType<T>[]>;
-    findByIdAndUpdate(id: string, query: SchemaTypeForQuery<T>): Promise<SchemaType<T>>;
-    findOneAndUpdate(searchQuery: SchemaTypeForQuery<T>, query: SchemaTypeForQuery<T>): Promise<SchemaType<T>>;
-    findByIdAndDelete(id: string): Promise<string>;
-    findOneAndDelete(searchQuery: SchemaTypeForQuery<T>): Promise<string>;
+    findMany(query?: SchemaTypeForQuery<T>): Promise<SchemaType<T>[] | undefined>;
+    findByIdAndUpdate(id: string, query: SchemaTypeForQuery<T>): Promise<SchemaType<T> | undefined>;
+    findOneAndUpdate(searchQuery: SchemaTypeForQuery<T>, query: SchemaTypeForQuery<T>): Promise<SchemaType<T> | undefined>;
+    findByIdAndDelete(id: string): Promise<"Ok" | undefined>;
+    findOneAndDelete(searchQuery: SchemaTypeForQuery<T>): Promise<"Ok" | undefined>;
 }
 export default DB;
