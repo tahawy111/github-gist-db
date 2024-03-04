@@ -1,7 +1,6 @@
 // Import necessary libraries
 import axios, { AxiosError } from "axios";
 import dotenv from "dotenv";
-import crypto from "crypto";
 
 // Load environment variables
 dotenv.config();
@@ -410,11 +409,11 @@ const productSchema = new DB(
 );
 
 (async () => {
-  // const product = await productSchema.create({
-  //   name: "laptop lenovo",
-  //   price: 500,
-  // });
-  // console.log(product);
+  const product = await productSchema.create({
+    name: "laptop lenovo",
+    price: 500,
+  });
+  console.log(product);
   // console.log(
   //   await productSchema.findOneAndUpdate(
   //     {name:"iphone 15 pro max"},

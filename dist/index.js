@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Import necessary libraries
 const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const crypto_1 = __importDefault(require("crypto"));
 // Load environment variables
 dotenv_1.default.config();
 // Define constants
@@ -59,7 +58,8 @@ class DB {
             }
         });
     }
-    PrepareGistBeforeRequest() {
+    //
+    PrepareGistBeforeRequestTheFile() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const checkData = yield this.fetchGistData();
@@ -75,6 +75,7 @@ class DB {
             }
         });
     }
+    // Helper function for PrepareGistBeforeRequestTheFile function
     updateGistFile() {
         return __awaiter(this, void 0, void 0, function* () {
             const headers = {
@@ -104,6 +105,7 @@ class DB {
     updateGistContent(content) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.PrepareGistBeforeRequestTheFile();
                 const response = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
                     files: {
                         [this.dbFileName]: { content },
@@ -127,7 +129,8 @@ class DB {
     create(payload) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let reqPayload = Object.assign(Object.assign({}, payload), { id: crypto_1.default.randomUUID() });
+                yield this.PrepareGistBeforeRequestTheFile();
+                let reqPayload = Object.assign(Object.assign({}, payload), { id: crypto.randomUUID() });
                 if (this.timeStamps) {
                     reqPayload.createdAt = new Date().toISOString();
                     reqPayload.updatedAt = new Date().toISOString();
@@ -169,8 +172,9 @@ class DB {
     findFirst(query) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.PrepareGistBeforeRequestTheFile();
                 const data = yield this.fetchGistData();
-                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                const list = JSON.parse(data.files[this.dbFileName].content);
                 return list.find((item) => {
                     for (let key in query) {
                         if (item[key] !== query[key]) {
@@ -188,8 +192,9 @@ class DB {
     findMany(query) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.PrepareGistBeforeRequestTheFile();
                 const data = yield this.fetchGistData();
-                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                const list = JSON.parse(data.files[this.dbFileName].content);
                 if (query) {
                     return list.filter((item) => {
                         for (let key in query) {
@@ -212,8 +217,9 @@ class DB {
     findByIdAndUpdate(id, query) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.PrepareGistBeforeRequestTheFile();
                 const data = yield this.fetchGistData();
-                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                const list = JSON.parse(data.files[this.dbFileName].content);
                 let updatedIndex = 0;
                 list.forEach((item, index) => {
                     if (item.id === id) {
@@ -225,7 +231,7 @@ class DB {
                     }
                 });
                 const update = yield this.updateGistContent(JSON.stringify(list));
-                const updatedList = JSON.parse(update.files["test.productSchema.json"].content);
+                const updatedList = JSON.parse(update.files[this.dbFileName].content);
                 return updatedList[updatedIndex];
             }
             catch (error) {
@@ -236,8 +242,9 @@ class DB {
     findOneAndUpdate(searchQuery, query) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.PrepareGistBeforeRequestTheFile();
                 const data = yield this.fetchGistData();
-                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                const list = JSON.parse(data.files[this.dbFileName].content);
                 let updatedIndex = 0;
                 list.forEach((item, index) => {
                     for (let key in searchQuery) {
@@ -251,7 +258,7 @@ class DB {
                     }
                 });
                 const update = yield this.updateGistContent(JSON.stringify(list));
-                const updatedList = JSON.parse(update.files["test.productSchema.json"].content);
+                const updatedList = JSON.parse(update.files[this.dbFileName].content);
                 return updatedList[updatedIndex];
             }
             catch (error) {
@@ -262,12 +269,13 @@ class DB {
     findByIdAndDelete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.PrepareGistBeforeRequestTheFile();
                 const res = yield axios_1.default.get(`${this.url}/${this.gistId}`, {
                     headers: {
                         Authorization: `Bearer ${this.githubToken}`,
                     },
                 });
-                const list = JSON.parse(res.data.files["test.productSchema.json"].content);
+                const list = JSON.parse(res.data.files[this.dbFileName].content);
                 const deleted = list.filter((item) => item.id !== id);
                 yield this.updateGistContent(JSON.stringify(deleted));
                 return "Ok";
@@ -280,8 +288,9 @@ class DB {
     findOneAndDelete(searchQuery) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.PrepareGistBeforeRequestTheFile();
                 const data = yield this.fetchGistData();
-                const list = JSON.parse(data.files["test.productSchema.json"].content);
+                const list = JSON.parse(data.files[this.dbFileName].content);
                 const deleted = list.filter((item) => {
                     for (let key in searchQuery) {
                         return item[key] !== searchQuery[key];
@@ -295,29 +304,6 @@ class DB {
             }
         });
     }
-    uploadImage() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const res = yield axios_1.default.post(`${this.url}`, {
-                    description: ``,
-                    public: false,
-                    files: {
-                        [`uploadImage.jpg`]: {
-                            content: `Hello`,
-                        },
-                    },
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${this.githubToken}`,
-                    },
-                });
-                return res.data;
-            }
-            catch (error) {
-                this.handleAPIError(error);
-            }
-        });
-    }
 }
 const productSchema = new DB({
     name: "String",
@@ -325,16 +311,16 @@ const productSchema = new DB({
 }, {
     githubToken: process.env.GITHUB_ACCESS_TOKEN,
     schemaName: "productSchema",
-    projectName: "test2",
+    projectName: "test",
     gistId: "48ec463b54be5973729a108297860555",
     timeStamps: true,
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    // const product = await productSchema.create({
-    //   name: "laptop lenovo",
-    //   price: 500,
-    // });
-    // console.log(product);
+    const product = yield productSchema.create({
+        name: "laptop lenovo",
+        price: 500,
+    });
+    console.log(product);
     // console.log(
     //   await productSchema.findOneAndUpdate(
     //     {name:"iphone 15 pro max"},
@@ -346,5 +332,5 @@ const productSchema = new DB({
     //     "33a66454-fc9a-4016-bc01-45731fc16be3"
     //   )
     // );
-    console.log(yield productSchema.PrepareGistBeforeRequest());
+    // console.log(await productSchema.PrepareGistBeforeRequestTheFile());
 }))();

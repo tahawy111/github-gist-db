@@ -1,0 +1,187 @@
+<h1 align="center">Welcome to Github-Gist-DB 👋</h1>
+<p>
+  <a href="https://www.npmjs.com/package/github-gist-db" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/github-gist-db.svg">
+  </a>
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
+
+> GitHub Gist DB is a lightweight NoSQL database package for Node.js, designed to store JSON data in GitHub Gists, providing CRUD operations and more.
+
+### 🏠 [Homepage](https://github.com/tahawy111/github-gist-db#readme)
+
+
+# Table of Contents
+
+1. [Installation](#installation)
+2. [Usage](#usage);
+3. [Learn](#learn)
+4. [License](#license)
+
+
+## Install <a name="installation"></a>
+
+```sh
+npm install github-gist-db
+```
+
+## Usage <a name="usage"></a>
+
+```typescript
+import { DB } from "github-gist-db";
+
+// Define your schema
+interface Product {
+  name: string;
+  price: number;
+}
+
+// Initialize the database
+const productSchema = new DB<Product>(
+  {
+    name: "String",
+    price: "Number",
+  },
+  {
+    githubToken: process.env.GITHUB_ACCESS_TOKEN!,
+    schemaName: "productSchema",
+    projectName: "test",
+    gistId: "48ec463b54be5973729a108297860555",
+    timeStamps: true,
+  }
+);
+
+// Example usage
+(async () => {
+  const product = await productSchema.create({
+    name: "laptop lenovo",
+    price: 500,
+  });
+  console.log(product);
+
+  const updatedProduct = await productSchema.findOneAndUpdate(
+    { name: "iphone 15 pro max" },
+    { name: "laptop Dell", price: 800 }
+  );
+  console.log(updatedProduct);
+
+  const deletionStatus = await productSchema.findByIdAndDelete(
+    "33a66454-fc9a-4016-bc01-45731fc16be3"
+  );
+  console.log(deletionStatus);
+})();
+```
+## Learn <a name="learn"></a>
+
+> First you have to define the Schema (the body of your database)
+
+```typescript
+import { DB } from "github-gist-db";
+
+// Define your schema
+interface Product {
+  name: string;
+  price: number;
+}
+
+// Initialize the database
+const productSchema = new DB<Product>(
+  {
+    name: "String",
+    price: "Number",
+  },
+  {
+    githubToken: process.env.GITHUB_ACCESS_TOKEN!,
+    schemaName: "productSchema",
+    projectName: "test",
+    gistId: "48ec463b54be5973729a108297860555",
+    timeStamps: true,
+  }
+);
+1.
+`
+ {
+    name: "String",
+    price: "Number",
+  },
+  this is the fields and its types of your database
+  you can define many fields as you want.
+  And here is the types you can create with
+    | "String"
+    | "Number"
+    | "Boolean"
+    | "Object"
+    | "Array"
+    | "Undefined"
+    | "Null"
+    | "Symbol"
+    | "BigInt"
+`
+
+2. `githubToken: process.env.GITHUB_ACCESS_TOKEN!
+
+your github access token you can create it in you Developer Settings
+
+`,
+
+```
+
+
+![alt text](https://i.imgur.com/fZbzItn.png?1)
+![alt text](https://i.imgur.com/7No4dws.png)
+![alt text](https://i.imgur.com/7No4dws.png)
+![alt text](https://i.imgur.com/Ok1pkQe.png)
+![alt text](https://i.imgur.com/XriJ5W4.png)
+
+`Only Check Gist`
+![alt text](https://i.imgur.com/MSXZFyb.png)
+
+And then click Generate Token 
+![alt text](https://i.imgur.com/Rbp7baO.png)
+This is your github Token
+![alt text](https://i.imgur.com/85BXM3M.png)
+
+
+> Create Method
+
+```typescript
+const product = await productSchema.create({
+  name: "laptop lenovo",
+  price: 500,
+});
+console.log(product);
+/*
+  {
+  name: 'laptop lenovo',
+  price: 500,
+  id: '16f1a00f-5527-4783-a966-29355aa5a9de',
+  createdAt: '2024-03-04T12:35:52.641Z',
+  updatedAt: '2024-03-04T12:35:52.643Z'
+  }
+  */
+```
+
+## Author
+
+👤 **ElTahawy**
+
+- Website: https://tahawy.vercel.app/
+- Github: [@tahawy111](https://github.com/tahawy111)
+- LinkedIn: [@amer-eltahawy](https://linkedin.com/in/amer-eltahawy)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/tahawy111/github-gist-db/issues).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2024 [Amer Eltahawy](https://github.com/tahawy111).<br />
+This project is [MIT](https://github.com/tahawy111/github-gist-db/LICENSE) licensed.
+
+---
