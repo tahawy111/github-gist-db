@@ -12,14 +12,16 @@
 
 ### 🏠 [Homepage](https://github.com/tahawy111/github-gist-db#readme)
 
-
 # Table of Contents
 
 1. [Installation](#installation)
-2. [Usage](#usage);
+2. [Usage](#usage)
 3. [Learn](#learn)
-4. [License](#license)
 
+- [Create Method](#CreateMethod)
+- [FindMany Method ](#FindManyMethod)
+
+4. [License](#license)
 
 ## Install <a name="installation"></a>
 
@@ -73,6 +75,7 @@ const productSchema = new DB<Product>(
   console.log(deletionStatus);
 })();
 ```
+
 ## Learn <a name="learn"></a>
 
 > First you have to define the Schema (the body of your database)
@@ -100,8 +103,7 @@ const productSchema = new DB<Product>(
     timeStamps: true,
   }
 );
-1.
-`
+1`
  {
     name: "String",
     price: "Number",
@@ -118,16 +120,11 @@ const productSchema = new DB<Product>(
     | "Null"
     | "Symbol"
     | "BigInt"
-`
-
-2. `githubToken: process.env.GITHUB_ACCESS_TOKEN!
-
-your github access token you can create it in you Developer Settings
-
-`,
-
+`;
 ```
 
+2. `githubToken: process.env.GITHUB_ACCESS_TOKEN!.
+your github access token you can create it in you Developer Settings`
 
 ![alt text](https://i.imgur.com/fZbzItn.png?1)
 ![alt text](https://i.imgur.com/7No4dws.png)
@@ -138,13 +135,22 @@ your github access token you can create it in you Developer Settings
 `Only Check Gist`
 ![alt text](https://i.imgur.com/MSXZFyb.png)
 
-And then click Generate Token 
+And then click Generate Token
 ![alt text](https://i.imgur.com/Rbp7baO.png)
-This is your github Token
+
+`This is your github Token`
+
 ![alt text](https://i.imgur.com/85BXM3M.png)
 
+> timeStamps: true
+3. `timeStamps: true, will add CreatedAt and updatedAT in your schema. whenever you create a new Document Example (new product)
+`
+   > Example `
+  createdAt: '2024-03-04T12:35:52.641Z',
+  updatedAt: '2024-03-04T12:35:52.643Z'
+ `
 
-> Create Method
+> Create Method <a name="CreateMethod"></a>
 
 ```typescript
 const product = await productSchema.create({
@@ -160,6 +166,32 @@ console.log(product);
   createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'
   }
+  */
+```
+> FindMany Method <a name="FindManyMethod"></a>
+
+
+```typescript
+  console.log(
+    await productSchema.findMany()
+  );
+/*
+  [
+  {
+    name: 'laptop lenovo',
+    price: 500,
+    id: '29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7',
+    createdAt: '2024-03-04T13:30:25.984Z',
+    updatedAt: '2024-03-04T13:30:25.986Z'
+  },
+  {
+    name: 'laptop lenovo',
+    price: 500,
+    id: '479a474b-a668-4407-8543-adcae24d9f91',
+    createdAt: '2024-03-04T13:31:08.447Z',
+    updatedAt: '2024-03-04T13:31:08.449Z'
+  }
+]
   */
 ```
 
@@ -179,7 +211,7 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 Give a ⭐️ if this project helped you!
 
-## 📝 License
+## 📝 License <a name="license"></a>
 
 Copyright © 2024 [Amer Eltahawy](https://github.com/tahawy111).<br />
 This project is [MIT](https://github.com/tahawy111/github-gist-db/LICENSE) licensed.

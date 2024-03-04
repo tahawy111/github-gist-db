@@ -413,17 +413,13 @@ const productSchema = new DB(
     name: "laptop lenovo",
     price: 500,
   });
-  console.log(product);
+  // console.log(product);
   // console.log(
   //   await productSchema.findOneAndUpdate(
   //     {name:"iphone 15 pro max"},
   //     { name: "laptop Dell", price: 800 }
   //   )
   // );
-  // console.log(
-  //   await productSchema.findByIdAndDelete(
-  //     "33a66454-fc9a-4016-bc01-45731fc16be3"
-  //   )
-  // );
+  console.log(await productSchema.findMany());
   // console.log(await productSchema.PrepareGistBeforeRequestTheFile());
 })();
