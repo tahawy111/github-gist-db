@@ -56,6 +56,7 @@ class DB<T extends SchemaTypes> {
   private readonly gistId?: string;
   private readonly timeStamps?: boolean;
   private readonly githubToken: string;
+  private readonly dbFileName: string;
 
   // Constructor
   constructor(
@@ -81,6 +82,7 @@ class DB<T extends SchemaTypes> {
     this.gistId = gistId;
     this.timeStamps = timeStamps;
     this.githubToken = githubToken;
+    this.dbFileName = `${this.projectName}.${this.schemaName}.json`;
   }
 
   // Helper function to handle API errors
@@ -93,7 +95,6 @@ class DB<T extends SchemaTypes> {
     }
     throw error; // Rethrow the error for the caller to handle
   }
-
   // Helper function to fetch data from Gist
   private async fetchGistData() {
     try {
@@ -107,15 +108,59 @@ class DB<T extends SchemaTypes> {
       this.handleAPIError(error);
     }
   }
+  //
+  private async PrepareGistBeforeRequestTheFile() {
+    try {
+      const checkData = await this.fetchGistData();
+      const files = checkData.files;
 
+      for (const fileName of Object.keys(files)) {
+        if (fileName !== this.dbFileName) {
+          await this.updateGistFile();
+        }
+      }
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
+  }
+  // Helper function for PrepareGistBeforeRequestTheFile function
+  private async updateGistFile() {
+    const headers = {
+      Authorization: `Bearer ${this.githubToken}`,
+    };
+
+    const gistData = {
+      description: `
+            Project: ${this.projectName}
+            && Schema: ${this.schemaName}
+        `,
+      public: false,
+      files: {
+        [this.dbFileName]: {
+          content: "[]",
+        },
+      },
+    };
+
+    try {
+      await axios.patch(
+        `https://api.github.com/gists/${this.gistId}`,
+        gistData,
+        { headers }
+      );
+    } catch (error: any) {
+      this.handleAPIError(error);
+    }
+  }
   // Helper function to update Gist content
   private async updateGistContent(content: string) {
     try {
+      await this.PrepareGistBeforeRequestTheFile();
       const response = await axios.patch(
         `${this.url}/${this.gistId}`,
         {
           files: {
-            [`${this.projectName}.${this.schemaName}.json`]: { content },
+            [this.dbFileName]: { content },
           },
         },
         {
@@ -130,16 +175,15 @@ class DB<T extends SchemaTypes> {
       this.handleAPIError(error);
     }
   }
-
   private getList(data: any): SchemaType<T>[] {
     const list: SchemaType<T>[] = JSON.parse(
-      data.files[`${this.projectName}.${this.schemaName}.json`].content
+      data.files[this.dbFileName].content
     );
     return list;
   }
-
   async create(payload: SchemaType<T>) {
     try {
+      await this.PrepareGistBeforeRequestTheFile();
       let reqPayload: any = {
         ...payload,
         id: crypto.randomUUID(),
@@ -174,7 +218,7 @@ class DB<T extends SchemaTypes> {
           `,
             public: false,
             files: {
-              [`${this.projectName}.${this.schemaName}.json`]: {
+              [this.dbFileName]: {
                 content: `[${JSON.stringify(reqPayload)}]`,
               },
             },
@@ -193,10 +237,11 @@ class DB<T extends SchemaTypes> {
   }
   async findFirst(query: SchemaTypeForQuery<T>) {
     try {
+      await this.PrepareGistBeforeRequestTheFile();
       const data = await this.fetchGistData();
 
       const list: SchemaType<T>[] = JSON.parse(
-        data.files["test.productSchema.json"].content
+        data.files[this.dbFileName].content
       );
 
       return list.find((item) => {
@@ -213,10 +258,11 @@ class DB<T extends SchemaTypes> {
   }
   async findMany(query?: SchemaTypeForQuery<T>) {
     try {
+      await this.PrepareGistBeforeRequestTheFile();
       const data = await this.fetchGistData();
 
       const list: SchemaType<T>[] = JSON.parse(
-        data.files["test.productSchema.json"].content
+        data.files[this.dbFileName].content
       );
       if (query) {
         return list.filter((item) => {
@@ -236,10 +282,11 @@ class DB<T extends SchemaTypes> {
   }
   async findByIdAndUpdate(id: string, query: SchemaTypeForQuery<T>) {
     try {
+      await this.PrepareGistBeforeRequestTheFile();
       const data = await this.fetchGistData();
 
       const list: SchemaType<T>[] = JSON.parse(
-        data.files["test.productSchema.json"].content
+        data.files[this.dbFileName].content
       );
 
       let updatedIndex = 0;
@@ -257,7 +304,7 @@ class DB<T extends SchemaTypes> {
       const update = await this.updateGistContent(JSON.stringify(list));
 
       const updatedList: SchemaType<T>[] = JSON.parse(
-        update.files["test.productSchema.json"].content
+        update.files[this.dbFileName].content
       );
 
       return updatedList[updatedIndex];
@@ -270,10 +317,11 @@ class DB<T extends SchemaTypes> {
     query: SchemaTypeForQuery<T>
   ) {
     try {
+      await this.PrepareGistBeforeRequestTheFile();
       const data = await this.fetchGistData();
 
       const list: SchemaType<T>[] = JSON.parse(
-        data.files["test.productSchema.json"].content
+        data.files[this.dbFileName].content
       );
 
       let updatedIndex = 0;
@@ -293,7 +341,7 @@ class DB<T extends SchemaTypes> {
       const update = await this.updateGistContent(JSON.stringify(list));
 
       const updatedList: SchemaType<T>[] = JSON.parse(
-        update.files["test.productSchema.json"].content
+        update.files[this.dbFileName].content
       );
 
       return updatedList[updatedIndex];
@@ -303,6 +351,7 @@ class DB<T extends SchemaTypes> {
   }
   async findByIdAndDelete(id: string) {
     try {
+      await this.PrepareGistBeforeRequestTheFile();
       const res = await axios.get(`${this.url}/${this.gistId}`, {
         headers: {
           Authorization: `Bearer ${this.githubToken}`,
@@ -310,7 +359,7 @@ class DB<T extends SchemaTypes> {
       });
 
       const list: SchemaType<T>[] = JSON.parse(
-        res.data.files["test.productSchema.json"].content
+        res.data.files[this.dbFileName].content
       );
 
       const deleted = list.filter((item) => item.id !== id);
@@ -324,10 +373,11 @@ class DB<T extends SchemaTypes> {
   }
   async findOneAndDelete(searchQuery: SchemaTypeForQuery<T>) {
     try {
+      await this.PrepareGistBeforeRequestTheFile();
       const data = await this.fetchGistData();
 
       const list: SchemaType<T>[] = JSON.parse(
-        data.files["test.productSchema.json"].content
+        data.files[this.dbFileName].content
       );
 
       const deleted = list.filter((item) => {
@@ -364,18 +414,17 @@ const productSchema = new DB(
   //   name: "laptop lenovo",
   //   price: 500,
   // });
-
   // console.log(product);
-
   // console.log(
   //   await productSchema.findOneAndUpdate(
   //     {name:"iphone 15 pro max"},
   //     { name: "laptop Dell", price: 800 }
   //   )
   // );
-  console.log(
-    await productSchema.findByIdAndDelete("33a66454-fc9a-4016-bc01-45731fc16be3")
-  );
+  // console.log(
+  //   await productSchema.findByIdAndDelete(
+  //     "33a66454-fc9a-4016-bc01-45731fc16be3"
+  //   )
+  // );
+  // console.log(await productSchema.PrepareGistBeforeRequestTheFile());
 })();
-
-export default DB;

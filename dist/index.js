@@ -30,6 +30,7 @@ class DB {
         this.gistId = gistId;
         this.timeStamps = timeStamps;
         this.githubToken = githubToken;
+        this.dbFileName = `${this.projectName}.${this.schemaName}.json`;
     }
     // Helper function to handle API errors
     handleAPIError(error) {
@@ -58,13 +59,54 @@ class DB {
             }
         });
     }
+    PrepareGistBeforeRequest() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const checkData = yield this.fetchGistData();
+                const files = checkData.files;
+                for (const fileName of Object.keys(files)) {
+                    if (fileName !== this.dbFileName) {
+                        yield this.updateGistFile();
+                    }
+                }
+            }
+            catch (error) {
+                this.handleAPIError(error);
+            }
+        });
+    }
+    updateGistFile() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const headers = {
+                Authorization: `Bearer ${this.githubToken}`,
+            };
+            const gistData = {
+                description: `
+            Project: ${this.projectName}
+            && Schema: ${this.schemaName}
+        `,
+                public: false,
+                files: {
+                    [this.dbFileName]: {
+                        content: "[]",
+                    },
+                },
+            };
+            try {
+                yield axios_1.default.patch(`https://api.github.com/gists/${this.gistId}`, gistData, { headers });
+            }
+            catch (error) {
+                this.handleAPIError(error);
+            }
+        });
+    }
     // Helper function to update Gist content
     updateGistContent(content) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield axios_1.default.patch(`${this.url}/${this.gistId}`, {
                     files: {
-                        [`${this.projectName}.${this.schemaName}.json`]: { content },
+                        [this.dbFileName]: { content },
                     },
                 }, {
                     headers: {
@@ -79,7 +121,7 @@ class DB {
         });
     }
     getList(data) {
-        const list = JSON.parse(data.files[`${this.projectName}.${this.schemaName}.json`].content);
+        const list = JSON.parse(data.files[this.dbFileName].content);
         return list;
     }
     create(payload) {
@@ -107,7 +149,7 @@ class DB {
           `,
                         public: false,
                         files: {
-                            [`${this.projectName}.${this.schemaName}.json`]: {
+                            [this.dbFileName]: {
                                 content: `[${JSON.stringify(reqPayload)}]`,
                             },
                         },
@@ -253,6 +295,29 @@ class DB {
             }
         });
     }
+    uploadImage() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const res = yield axios_1.default.post(`${this.url}`, {
+                    description: ``,
+                    public: false,
+                    files: {
+                        [`uploadImage.jpg`]: {
+                            content: `Hello`,
+                        },
+                    },
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${this.githubToken}`,
+                    },
+                });
+                return res.data;
+            }
+            catch (error) {
+                this.handleAPIError(error);
+            }
+        });
+    }
 }
 const productSchema = new DB({
     name: "String",
@@ -260,7 +325,7 @@ const productSchema = new DB({
 }, {
     githubToken: process.env.GITHUB_ACCESS_TOKEN,
     schemaName: "productSchema",
-    projectName: "test",
+    projectName: "test2",
     gistId: "48ec463b54be5973729a108297860555",
     timeStamps: true,
 });
@@ -276,6 +341,10 @@ const productSchema = new DB({
     //     { name: "laptop Dell", price: 800 }
     //   )
     // );
-    console.log(yield productSchema.findByIdAndDelete("33a66454-fc9a-4016-bc01-45731fc16be3"));
+    // console.log(
+    //   await productSchema.findByIdAndDelete(
+    //     "33a66454-fc9a-4016-bc01-45731fc16be3"
+    //   )
+    // );
+    console.log(yield productSchema.PrepareGistBeforeRequest());
 }))();
-exports.default = DB;
