@@ -39,10 +39,11 @@
 npm install github-gist-db
 ```
 
-<br/>
-<br/>
-
 ## Usage <a name="usage"></a>
+
+
+<br/>
+<br/>
 
 ```typescript
 import { DB } from "github-gist-db";
