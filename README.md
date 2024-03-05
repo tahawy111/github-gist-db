@@ -19,12 +19,12 @@
 * [Usage](#usage)
 * [Learn](#learn)
     * [Create Method](#create-method)
-    * [FindMany Method](#findManyMethod)
-    * [FindFirst Method](#findFirstMethod)
-    * [FindByIdAndUpdate Method](#findByIdAndUpdateMethod)
-    * [FindOneAndUpdate Method](#findOneAndUpdateMethod)
-    * [FindByIdAndDelete Method](findByIdAndDeleteMethod)
-    * [FindOneAndDelete Method](#findOneAndDeleteMethod)
+    * [FindMany Method](#find-many-method)
+    * [FindFirst Method](#find-first-method)
+    * [FindByIdAndUpdate Method](#find-by-id-and-update-method)
+    * [FindOneAndUpdate Method](#find-one-and-update-method)
+    * [FindByIdAndDelete Method](#find-byId-and-delete-method)
+    * [FindOneAndDelete Method](#find-one-and-delete-method)
 * [Author](#author)
 * [ Contributing](#contributing)
 * [Show your support](#show-your-support)
@@ -180,7 +180,7 @@ console.log(product);
 ```
 
 
-### [FindMany Method](#findManyMethod)
+### [FindMany Method](#find-many-method)
 
 ```typescript
 console.log(await productSchema.findMany());
@@ -203,7 +203,7 @@ console.log(await productSchema.findMany());
 ]
   */
 ```
-### [FindFirst Method](#findFirstMethod)
+### [FindFirst Method](#find-first-method)
 
 ```typescript
 console.log(await productSchema.findMany());
@@ -228,7 +228,7 @@ console.log(await productSchema.findMany());
 ```
 
 
-### [FindByIdAndUpdate Method](#findByIdAndUpdateMethod)
+### [FindByIdAndUpdate Method](#find-by-id-and-update-method)
 
 ```typescript
 console.log(
@@ -259,7 +259,7 @@ Before:
 ```
 
 
-### [FindOneAndUpdate Method](#findOneAndUpdateMethod)
+### [FindOneAndUpdate Method](#find-one-and-update-method)
 
 ```typescript
 console.log(
@@ -289,13 +289,8 @@ Before:
   */
 ```
 
-<a name="findByIdAndDeleteMethod">
-<br/>
-<br/>
-</a>
 
-
-### [FindByIdAndDelete Method](#findByIdAndDeleteMethod)
+### [FindByIdAndDelete Method](#find-byId-and-delete-method)
 
 ```typescript
 console.log(
@@ -321,7 +316,7 @@ Before:
 
 
 
-### [FindOneAndDelete Method](#findOneAndDeleteMethod)
+### [FindOneAndDelete Method](#find-one-and-delete-method)
 <br/>
 <br/>
 </a>
