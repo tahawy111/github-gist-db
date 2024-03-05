@@ -29,13 +29,17 @@
 
 4. [License](#license)
 
-## Install <a name="installation"></a>
+<a name="installation"></a>
+
+## Install
 
 ```sh
 npm install github-gist-db
 ```
 
-## Usage <a name="usage"></a>
+ <a name="usage"></a>
+
+## Usage
 
 ```typescript
 import { DB } from "github-gist-db";
@@ -153,7 +157,9 @@ And then click Generate Token
 > Example ` createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'`
 
-> Create Method <a name="CreateMethod"></a>
+<a name="CreateMethod"></a>
+
+> Create Method
 
 ```typescript
 const product = await productSchema.create({
@@ -171,8 +177,34 @@ console.log(product);
   }
   */
 ```
+<a name="FindManyMethod"></a>
 
-> FindMany Method <a name="FindManyMethod"></a>
+> FindMany Method
+
+```typescript
+console.log(await productSchema.findMany());
+/*
+  [
+  {
+    name: 'laptop lenovo',
+    price: 500,
+    id: '29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7',
+    createdAt: '2024-03-04T13:30:25.984Z',
+    updatedAt: '2024-03-04T13:30:25.986Z'
+  },
+  {
+    name: 'laptop lenovo',
+    price: 500,
+    id: '479a474b-a668-4407-8543-adcae24d9f91',
+    createdAt: '2024-03-04T13:31:08.447Z',
+    updatedAt: '2024-03-04T13:31:08.449Z'
+  }
+]
+  */
+```
+ <a name="findFirstMethod"></a>
+
+> findFirst Method
 
 ```typescript
 console.log(await productSchema.findMany());
@@ -196,31 +228,9 @@ console.log(await productSchema.findMany());
   */
 ```
 
-> findFirst Method <a name="findFirstMethod"></a>
+<a name="findByIdAndUpdateMethod"></a>
 
-```typescript
-console.log(await productSchema.findMany());
-/*
-  [
-  {
-    name: 'laptop lenovo',
-    price: 500,
-    id: '29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7',
-    createdAt: '2024-03-04T13:30:25.984Z',
-    updatedAt: '2024-03-04T13:30:25.986Z'
-  },
-  {
-    name: 'laptop lenovo',
-    price: 500,
-    id: '479a474b-a668-4407-8543-adcae24d9f91',
-    createdAt: '2024-03-04T13:31:08.447Z',
-    updatedAt: '2024-03-04T13:31:08.449Z'
-  }
-]
-  */
-```
-
-> findByIdAndUpdate Method <a name="findByIdAndUpdateMethod"></a>
+> findByIdAndUpdate Method
 
 ```typescript
 console.log(
@@ -250,7 +260,9 @@ Before:
   */
 ```
 
-> findOneAndUpdate Method <a name="findOneAndUpdateMethod"></a>
+ <a name="findOneAndUpdateMethod"></a>
+
+> findOneAndUpdate Method
 
 ```typescript
 console.log(
@@ -280,7 +292,9 @@ Before:
   */
 ```
 
-> findByIdAndDelete Method <a name="findByIdAndDeleteMethod"></a>
+<a name="findByIdAndDeleteMethod"></a>
+
+> findByIdAndDelete Method
 
 ```typescript
 console.log(
@@ -304,7 +318,9 @@ Before:
   */
 ```
 
-> findOneAndDelete Method <a name="findOneAndDeleteMethod"></a>
+<a name="findOneAndDeleteMethod"></a>
+
+> findOneAndDelete Method
 
 ```typescript
   console.log(
