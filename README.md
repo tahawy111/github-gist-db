@@ -33,8 +33,8 @@
 
 </br>
 </br>
-</br>
 <a name="installation"></a>
+</br>
 </br>
 
 
@@ -48,8 +48,8 @@ npm install github-gist-db
 
 </br>
 </br>
-</br>
  <a name="usage"></a>
+</br>
 </br>
 
 
@@ -104,8 +104,8 @@ const productSchema = new DB<Product>(
 
 </br>
 </br>
-</br>
 ## Learn <a name="learn"></a>
+</br>
 </br>
 
 
@@ -182,8 +182,8 @@ And then click Generate Token
 
 </br>
 </br>
-</br>
 <a name="CreateMethod"></a>
+</br>
 </br>
 
 
@@ -240,8 +240,8 @@ console.log(await productSchema.findMany());
 ``
 </br>
 </br>
-</br>
  <a name="findFirstMethod"></a>
+</br>
 </br>
 
 
@@ -273,8 +273,8 @@ console.log(await productSchema.findMany());
 
 </br>
 </br>
-</br>
 <a name="findByIdAndUpdateMethod"></a>
+</br>
 </br>
 
 
@@ -312,8 +312,8 @@ Before:
 
 </br>
 </br>
-</br>
  <a name="findOneAndUpdateMethod"></a>
+</br>
 </br>
 
 
@@ -351,8 +351,8 @@ Before:
 
 </br>
 </br>
-</br>
 <a name="findByIdAndDeleteMethod"></a>
+</br>
 </br>
 
 
@@ -384,8 +384,8 @@ Before:
 
 </br>
 </br>
-</br>
 <a name="findOneAndDeleteMethod"></a>
+</br>
 </br>
 
 
@@ -430,8 +430,8 @@ Give a ⭐️ if this project helped you!
 
 </br>
 </br>
-</br>
 ## 📝 License <a name="license"></a>
+</br>
 </br>
 
 
