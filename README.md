@@ -39,9 +39,8 @@
 npm install github-gist-db
 ```
 
+<br/>
 ## Usage <a name="usage"></a>
-
-
 <br/>
 <br/>
 
@@ -92,6 +91,7 @@ const productSchema = new DB<Product>(
 
 
 
+<br/>
 ## Learn <a name="learn"></a>
 <br/>
 <br/>
