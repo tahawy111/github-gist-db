@@ -28,16 +28,18 @@
 - [findOneAndDelete Method ](#findOneAndDeleteMethod)
 
 4. [License](#license)
-
-<a style="margin-top:15px;" name="installation"></a>
+<br/>
+<br/>
+<a name="installation"></a>
 
 ## Install
 
 ```sh
 npm install github-gist-db
 ```
-
- <a style="margin-top:15px;" name="usage"></a>
+<br/>
+<br/>
+ <a name="usage"></a>
 
 ## Usage
 
@@ -85,8 +87,9 @@ const productSchema = new DB<Product>(
   console.log(deletionStatus);
 })();
 ```
-
-## Learn <a style="margin-top:15px;" name="learn"></a>
+<br/>
+<br/>
+## Learn <a name="learn"></a>
 
 > First you have to define the Schema (the body of your database)
 
@@ -156,8 +159,9 @@ And then click Generate Token
 `
 > Example ` createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'`
-
-<a style="margin-top:15px;" name="CreateMethod"></a>
+<br/>
+<br/>
+<a name="CreateMethod"></a>
 
 > Create Method
 
@@ -176,8 +180,9 @@ console.log(product);
   updatedAt: '2024-03-04T12:35:52.643Z'
   }
   */
-```
-<a style="margin-top:15px;" name="FindManyMethod"></a>
+``<br/>`
+``<br/>`
+<a name="FindManyMethod"></a>
 
 > FindMany Method
 
@@ -201,8 +206,9 @@ console.log(await productSchema.findMany());
   }
 ]
   */
-```
- <a style="margin-top:15px;" name="findFirstMethod"></a>
+```<br/>
+```<br/>
+ <a name="findFirstMethod"></a>
 
 > findFirst Method
 
@@ -227,8 +233,9 @@ console.log(await productSchema.findMany());
 ]
   */
 ```
-
-<a style="margin-top:15px;" name="findByIdAndUpdateMethod"></a>
+<br/>
+<br/>
+<a name="findByIdAndUpdateMethod"></a>
 
 > findByIdAndUpdate Method
 
@@ -259,8 +266,9 @@ Before:
   }
   */
 ```
-
- <a style="margin-top:15px;" name="findOneAndUpdateMethod"></a>
+<br/>
+<br/>
+ <a name="findOneAndUpdateMethod"></a>
 
 > findOneAndUpdate Method
 
@@ -291,8 +299,9 @@ Before:
   }
   */
 ```
-
-<a style="margin-top:15px;" name="findByIdAndDeleteMethod"></a>
+<br/>
+<br/>
+<a name="findByIdAndDeleteMethod"></a>
 
 > findByIdAndDelete Method
 
@@ -317,8 +326,9 @@ Before:
  Response "Ok"
   */
 ```
-
-<a style="margin-top:15px;" name="findOneAndDeleteMethod"></a>
+<br/>
+<br/>
+<a name="findOneAndDeleteMethod"></a>
 
 > findOneAndDelete Method
 
@@ -356,8 +366,9 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
-
-## 📝 License <a style="margin-top:15px;" name="license"></a>
+<br/>
+<br/>
+## 📝 License <a name="license"></a>
 
 Copyright © 2024 [Amer Eltahawy](https://github.com/tahawy111).<br />
 This project is [MIT](https://github.com/tahawy111/github-gist-db/LICENSE) licensed.
