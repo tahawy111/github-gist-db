@@ -30,9 +30,10 @@
 * [Show your support](#show-your-support)
 * [ License](#license)
 
-<a name="installation"></a>
+<a name="installation">
 <br/>
 <br/>
+</a>
 
 ## Install
 
