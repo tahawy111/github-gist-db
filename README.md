@@ -29,9 +29,9 @@
 
 4. [License](#license)
 
-<br/>
-<br/>
 <a name="installation"></a>
+<br/>
+<br/>
 
 ## Install
 
@@ -39,9 +39,9 @@
 npm install github-gist-db
 ```
 
-<br/>
-<br/>
  <a name="usage"></a>
+<br/>
+<br/>
 
 ## Usage
 
@@ -90,9 +90,9 @@ const productSchema = new DB<Product>(
 })();
 ```
 
-<br/>
-<br/>
 
+<br/>
+<br/>
 ## Learn <a name="learn"></a>
 
 > First you have to define the Schema (the body of your database)
@@ -164,9 +164,9 @@ And then click Generate Token
 > Example ` createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'`
 
-<br/>
-<br/>
 <a name="CreateMethod"></a>
+<br/>
+<br/>
 
 > Create Method
 
@@ -186,9 +186,9 @@ console.log(product);
   }
   */
 ```
-<br/>
-<br/>
 <a name="FindManyMethod"></a>
+<br/>
+<br/>
 
 > FindMany Method
 
@@ -213,9 +213,9 @@ console.log(await productSchema.findMany());
 ]
   */
 ```
-<br/>
-<br/>
  <a name="findFirstMethod"></a>
+<br/>
+<br/>
 
 > findFirst Method
 
@@ -241,9 +241,9 @@ console.log(await productSchema.findMany());
   */
 ```
 
-<br/>
-<br/>
 <a name="findByIdAndUpdateMethod"></a>
+<br/>
+<br/>
 
 > findByIdAndUpdate Method
 
@@ -275,9 +275,9 @@ Before:
   */
 ```
 
-<br/>
-<br/>
  <a name="findOneAndUpdateMethod"></a>
+<br/>
+<br/>
 
 > findOneAndUpdate Method
 
@@ -309,9 +309,9 @@ Before:
   */
 ```
 
-<br/>
-<br/>
 <a name="findByIdAndDeleteMethod"></a>
+<br/>
+<br/>
 
 > findByIdAndDelete Method
 
@@ -337,9 +337,9 @@ Before:
   */
 ```
 
-<br/>
-<br/>
 > findOneAndDelete Method <a name="findOneAndDeleteMethod"></a>
+<br/>
+<br/>
 
 ```typescript
   console.log(
@@ -376,9 +376,9 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 Give a ⭐️ if this project helped you!
 
-<br/>
-<br/>
 ## 📝 License <a name="license"></a>
+<br/>
+<br/>
 
 Copyright © 2024 [Amer Eltahawy](https://github.com/tahawy111).<br />
 This project is [MIT](https://github.com/tahawy111/github-gist-db/LICENSE) licensed.
