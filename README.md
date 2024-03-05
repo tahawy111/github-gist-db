@@ -92,6 +92,7 @@ const productSchema = new DB<Product>(
 
 <br/>
 <br/>
+
 ## Learn <a name="learn"></a>
 
 > First you have to define the Schema (the body of your database)
