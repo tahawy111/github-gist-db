@@ -15,19 +15,20 @@
 
 # Table of Contents
 
-1. [Installation](#installation)
-2. [Usage](#usage)
-3. [Learn](#learn)
-
-- [Create Method](#CreateMethod)
-- [FindMany Method ](#FindManyMethod)
-- [findFirst Method ](#findFirstMethod)
-- [findByIdAndUpdate Method ](#findByIdAndUpdateMethod)
-- [findOneAndUpdate Method ](#findOneAndUpdateMethod)
-- [findByIdAndDelete Method ](#findByIdAndDeleteMethod)
-- [findOneAndDelete Method ](#findOneAndDeleteMethod)
-
-4. [License](#license)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Learn](#learn)
+    * [Create Method](#CreateMethod)
+    * [Find Many Method](#FindManyMethod)
+    * [Find First Method](#findFirstMethod)
+    * [Find By Id And Update Method](#findByIdAndUpdateMethod)
+    * [Find One And Update Method](#findOneAndUpdateMethod)
+    * [Find By Id And Delete Method](#findByIdAndDeleteMethod)
+    * [Find One And Delete Method](#findOneAndDeleteMethod)
+* [Author](#author)
+* [ Contributing](#contributing)
+* [Show your support](#show-your-support)
+* [ License](#license)
 
 <a name="installation"></a>
 <br/>
