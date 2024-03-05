@@ -29,6 +29,9 @@
 
 4. [License](#license)
 
+</br>
+
+
 <a name="installation"></a>
 
 ## Install
@@ -36,6 +39,9 @@
 ```sh
 npm install github-gist-db
 ```
+
+</br>
+
 
  <a name="usage"></a>
 
@@ -85,6 +91,9 @@ const productSchema = new DB<Product>(
   console.log(deletionStatus);
 })();
 ```
+
+</br>
+
 
 ## Learn <a name="learn"></a>
 
@@ -157,6 +166,9 @@ And then click Generate Token
 > Example ` createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'`
 
+</br>
+
+
 <a name="CreateMethod"></a>
 
 > Create Method
@@ -176,6 +188,9 @@ console.log(product);
   updatedAt: '2024-03-04T12:35:52.643Z'
   }
   */
+
+</br>
+
 ```
 <a name="FindManyMethod"></a>
 
@@ -201,7 +216,10 @@ console.log(await productSchema.findMany());
   }
 ]
   */
-```
+
+</br>
+`
+``
  <a name="findFirstMethod"></a>
 
 > findFirst Method
@@ -227,6 +245,9 @@ console.log(await productSchema.findMany());
 ]
   */
 ```
+
+</br>
+
 
 <a name="findByIdAndUpdateMethod"></a>
 
@@ -260,6 +281,9 @@ Before:
   */
 ```
 
+</br>
+
+
  <a name="findOneAndUpdateMethod"></a>
 
 > findOneAndUpdate Method
@@ -292,6 +316,9 @@ Before:
   */
 ```
 
+</br>
+
+
 <a name="findByIdAndDeleteMethod"></a>
 
 > findByIdAndDelete Method
@@ -317,6 +344,9 @@ Before:
  Response "Ok"
   */
 ```
+
+</br>
+
 
 <a name="findOneAndDeleteMethod"></a>
 
@@ -356,6 +386,9 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+
+</br>
+
 
 ## 📝 License <a name="license"></a>
 
