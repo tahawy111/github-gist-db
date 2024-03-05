@@ -316,17 +316,12 @@ const productSchema = new DB({
     timeStamps: true,
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    const product = yield productSchema.create({
-        name: "laptop lenovo",
-        price: 500,
-    });
+    // const product = await productSchema.create({
+    //   name: "laptop lenovo",
+    //   price: 500,
+    // });
     // console.log(product);
-    // console.log(
-    //   await productSchema.findOneAndUpdate(
-    //     {name:"iphone 15 pro max"},
-    //     { name: "laptop Dell", price: 800 }
-    //   )
-    // );
-    console.log(yield productSchema.findMany());
+    console.log(yield productSchema.findOneAndDelete({ id: "479a474b-a668-4407-8543-adcae24d9f91" }));
+    // console.log(await productSchema.findMany());
     // console.log(await productSchema.PrepareGistBeforeRequestTheFile());
 }))();

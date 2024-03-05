@@ -9,7 +9,7 @@
 </p>
 
 > Unlimited GitHub Gist DB is a lightweight NoSQL database package for Node.js, designed to store JSON data in GitHub Gists, providing CRUD operations and more.
-Because it depends on the gists and Github says that you can create an unlimted gists and unlimited requests 🤑 for free.
+> Because it depends on the gists and Github says that you can create an unlimted gists and unlimited requests 🤑 for free.
 
 ### 🏠 [Homepage](https://github.com/tahawy111/github-gist-db#readme)
 
@@ -18,8 +18,14 @@ Because it depends on the gists and Github says that you can create an unlimted 
 1. [Installation](#installation)
 2. [Usage](#usage)
 3. [Learn](#learn)
-  - [Create Method](#CreateMethod)
-  - [FindMany Method ](#FindManyMethod)
+
+- [Create Method](#CreateMethod)
+- [FindMany Method ](#FindManyMethod)
+- [findFirst Method ](#findFirstMethod)
+- [findByIdAndUpdate Method ](#findByIdAndUpdateMethod)
+- [findOneAndUpdate Method ](#findOneAndUpdateMethod)
+- [findByIdAndDelete Method ](#findByIdAndDeleteMethod)
+- [findOneAndDelete Method ](#findOneAndDeleteMethod)
 
 4. [License](#license)
 
@@ -142,13 +148,10 @@ And then click Generate Token
 
 ![alt text](https://i.imgur.com/85BXM3M.png)
 
-> timeStamps: true
-3. `timeStamps: true, will add CreatedAt and updatedAT in your schema. whenever you create a new Document Example (new product)
+> timeStamps: true 3. `timeStamps: true, will add CreatedAt and updatedAT in your schema. whenever you create a new Document Example (new product)
 `
-   > Example `
-  createdAt: '2024-03-04T12:35:52.641Z',
-  updatedAt: '2024-03-04T12:35:52.643Z'
- `
+> Example ` createdAt: '2024-03-04T12:35:52.641Z',
+  updatedAt: '2024-03-04T12:35:52.643Z'`
 
 > Create Method <a name="CreateMethod"></a>
 
@@ -168,13 +171,11 @@ console.log(product);
   }
   */
 ```
+
 > FindMany Method <a name="FindManyMethod"></a>
 
-
 ```typescript
-  console.log(
-    await productSchema.findMany()
-  );
+console.log(await productSchema.findMany());
 /*
   [
   {
@@ -192,6 +193,135 @@ console.log(product);
     updatedAt: '2024-03-04T13:31:08.449Z'
   }
 ]
+  */
+```
+
+> findFirst Method <a name="findFirstMethod"></a>
+
+```typescript
+console.log(await productSchema.findMany());
+/*
+  [
+  {
+    name: 'laptop lenovo',
+    price: 500,
+    id: '29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7',
+    createdAt: '2024-03-04T13:30:25.984Z',
+    updatedAt: '2024-03-04T13:30:25.986Z'
+  },
+  {
+    name: 'laptop lenovo',
+    price: 500,
+    id: '479a474b-a668-4407-8543-adcae24d9f91',
+    createdAt: '2024-03-04T13:31:08.447Z',
+    updatedAt: '2024-03-04T13:31:08.449Z'
+  }
+]
+  */
+```
+
+> findByIdAndUpdate Method <a name="findByIdAndUpdateMethod"></a>
+
+```typescript
+console.log(
+  await productSchema.findByIdAndUpdate(
+    "29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7",
+    { name: "laptop Dell", price: 800 }
+  )
+);
+/*
+Before:
+  {
+    "name": "laptop lenovo",
+    "price": 500,
+    "id": "29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7",
+    "createdAt": "2024-03-04T13:30:25.984Z",
+    "updatedAt": "2024-03-04T13:30:25.986Z"
+  }
+
+  After:
+  {
+  name: 'laptop Dell',
+  price: 800,
+  id: '29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7',
+  createdAt: '2024-03-04T13:30:25.984Z',
+  updatedAt: '2024-03-05T21:54:15.440Z'
+  }
+  */
+```
+
+> findOneAndUpdate Method <a name="findOneAndUpdateMethod"></a>
+
+```typescript
+console.log(
+  await productSchema.findByIdAndUpdate(
+    "29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7",
+    { name: "laptop Dell", price: 800 }
+  )
+);
+/*
+Before:
+  {
+  name: 'laptop Dell',
+  price: 800,
+  id: '29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7',
+  createdAt: '2024-03-04T13:30:25.984Z',
+  updatedAt: '2024-03-05T21:54:15.440Z'
+  }
+
+  After:
+  {
+  name: 'laptop Dell 2',
+  price: 800,
+  id: '29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7',
+  createdAt: '2024-03-04T13:30:25.984Z',
+  updatedAt: '2024-03-05T21:58:24.302Z'
+  }
+  */
+```
+
+> findByIdAndDelete Method <a name="findByIdAndDeleteMethod"></a>
+
+```typescript
+console.log(
+  await productSchema.findByIdAndUpdate(
+    "29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7",
+    { name: "laptop Dell", price: 800 }
+  )
+);
+/*
+Before:
+  {
+    name: 'laptop Dell 2',
+    price: 800,
+    id: '29ad41de-b015-4d96-a9d4-1a5c5a4a4ec7',
+    createdAt: '2024-03-04T13:30:25.984Z',
+    updatedAt: '2024-03-05T21:58:24.302Z'
+  }
+
+  After:
+ Response "Ok"
+  */
+```
+
+> findOneAndDelete Method <a name="findOneAndDeleteMethod"></a>
+
+```typescript
+  console.log(
+    await productSchema.findOneAndDelete({id:"479a474b-a668-4407-8543-adcae24d9f91"})
+  );
+/*
+Before:
+  {
+    "name": "laptop lenovo",
+    "price": 500,
+    "id": "479a474b-a668-4407-8543-adcae24d9f91",
+    "createdAt": "2024-03-04T13:31:08.447Z",
+    "updatedAt": "2024-03-04T13:31:08.449Z"
+  }
+
+  After:
+ Response "Ok"
   */
 ```
 
