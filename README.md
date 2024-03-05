@@ -198,13 +198,13 @@ console.log(product);
   }
   */
 ```
+
 <a name="FindManyMethod">
 <br/>
 <br/>
 </a>
 
-
-> FindMany Method
+### FindMany Method
 
 ```typescript
 console.log(await productSchema.findMany());
@@ -233,7 +233,7 @@ console.log(await productSchema.findMany());
  </a>
 
 
-> findFirst Method
+### findFirst Method
 
 ```typescript
 console.log(await productSchema.findMany());
@@ -263,7 +263,7 @@ console.log(await productSchema.findMany());
 </a>
 
 
-> findByIdAndUpdate Method
+### findByIdAndUpdate Method
 
 ```typescript
 console.log(
@@ -299,7 +299,7 @@ Before:
  </a>
 
 
-> findOneAndUpdate Method
+### findOneAndUpdate Method
 
 ```typescript
 console.log(
@@ -335,7 +335,7 @@ Before:
 </a>
 
 
-> findByIdAndDelete Method
+### findByIdAndDelete Method
 
 ```typescript
 console.log(
@@ -361,7 +361,7 @@ Before:
 
 
 
-> findOneAndDelete Method <a name="findOneAndDeleteMethod">
+### findOneAndDelete Method <a name="findOneAndDeleteMethod">
 <br/>
 <br/>
 </a>
