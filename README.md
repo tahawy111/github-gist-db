@@ -39,11 +39,10 @@
 npm install github-gist-db
 ```
 
- <a name="usage"></a>
 <br/>
 <br/>
 
-## Usage
+## Usage <a name="usage"></a>
 
 ```typescript
 import { DB } from "github-gist-db";
@@ -93,6 +92,7 @@ const productSchema = new DB<Product>(
 
 <br/>
 <br/>
+
 ## Learn <a name="learn"></a>
 
 > First you have to define the Schema (the body of your database)
