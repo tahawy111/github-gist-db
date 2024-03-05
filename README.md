@@ -18,37 +18,25 @@
 * [Installation](#installation)
 * [Usage](#usage)
 * [Learn](#learn)
-    * [Create Method](#CreateMethod)
-    * [FindMany Method](#FindManyMethod)
+    * [Create Method](#createMethod)
+    * [FindMany Method](#findManyMethod)
     * [FindFirst Method](#findFirstMethod)
     * [FindByIdAndUpdate Method](#findByIdAndUpdateMethod)
     * [FindOneAndUpdate Method](#findOneAndUpdateMethod)
-    * [FindByIdAndDelete Method](#findByIdAndDeleteMethod)
+    * [FindByIdAndDelete Method](fFindByIdAndDeleteMethod)
     * [FindOneAndDelete Method](#findOneAndDeleteMethod)
 * [Author](#author)
 * [ Contributing](#contributing)
 * [Show your support](#show-your-support)
 * [ License](#license)
 
-<a name="installation">
-<br/>
-<br/>
-</a>
-
-
-## Install
+## [Install](#installation)
 
 ```sh
 npm install github-gist-db
 ```
 
-<a name="CreateMethod">
-<br/>
-<br/>
-</a>
-
-
-## Create Method
+## [Create Method](#createMethod)
 
 ```typescript
 import { DB } from "github-gist-db";
@@ -97,12 +85,7 @@ const productSchema = new DB<Product>(
 
 
 
-<a name="learn">
-<br/>
-<br/>
-</a>
-
-## Learn 
+## [Learn](#learn)
 
 
 > First you have to define the Schema (the body of your database)
@@ -174,13 +157,7 @@ And then click Generate Token
 > Example ` createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'`
 
-<a name="CreateMethod">
-<br/>
-<br/>
-</a>
-
-
-### Create Method
+### [Create Method](#createMethod)
 
 ```typescript
 const product = await productSchema.create({
@@ -199,12 +176,8 @@ console.log(product);
   */
 ```
 
-<a name="FindManyMethod">
-<br/>
-<br/>
-</a>
 
-### FindMany Method
+### [FindMany Method](#findManyMethod)
 
 ```typescript
 console.log(await productSchema.findMany());
@@ -227,13 +200,7 @@ console.log(await productSchema.findMany());
 ]
   */
 ```
- <a name="findFirstMethod">
- <br/>
-<br/>
- </a>
-
-
-### findFirst Method
+### [FindFirst Method](#findFirstMethod)
 
 ```typescript
 console.log(await productSchema.findMany());
@@ -257,13 +224,8 @@ console.log(await productSchema.findMany());
   */
 ```
 
-<a name="findByIdAndUpdateMethod">
-<br/>
-<br/>
-</a>
 
-
-### findByIdAndUpdate Method
+### [FindByIdAndUpdate Method](#findByIdAndUpdateMethod)
 
 ```typescript
 console.log(
@@ -293,13 +255,8 @@ Before:
   */
 ```
 
- <a name="findOneAndUpdateMethod">
- <br/>
-<br/>
- </a>
 
-
-### findOneAndUpdate Method
+### [FindOneAndUpdate Method](#findOneAndUpdateMethod)
 
 ```typescript
 console.log(
@@ -335,7 +292,7 @@ Before:
 </a>
 
 
-### findByIdAndDelete Method
+### [FindByIdAndDelete Method](#findByIdAndDeleteMethod)
 
 ```typescript
 console.log(
@@ -361,7 +318,7 @@ Before:
 
 
 
-### findOneAndDelete Method <a name="findOneAndDeleteMethod">
+### [FindOneAndDelete Method](#findOneAndDeleteMethod)
 <br/>
 <br/>
 </a>
