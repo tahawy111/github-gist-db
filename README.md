@@ -3,7 +3,7 @@
   <a href="https://www.npmjs.com/package/github-gist-db" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/github-gist-db.svg">
   </a>
-  <a href="#" target="_blank">
+  <a href="" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
 </p>
@@ -42,13 +42,13 @@
 npm install github-gist-db
 ```
 
-<a name="usage">
+<a name="CreateMethod">
 <br/>
 <br/>
 </a>
 
 
-## Usage
+## Create Method
 
 ```typescript
 import { DB } from "github-gist-db";
