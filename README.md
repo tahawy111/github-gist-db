@@ -40,6 +40,7 @@ npm install github-gist-db
 ```
 
 <br/>
+
 ## Usage <a name="usage"></a>
 <br/>
 <br/>
