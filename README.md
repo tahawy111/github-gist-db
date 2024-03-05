@@ -28,6 +28,7 @@
 - [findOneAndDelete Method ](#findOneAndDeleteMethod)
 
 4. [License](#license)
+
 <br/>
 <br/>
 <a name="installation"></a>
@@ -37,6 +38,7 @@
 ```sh
 npm install github-gist-db
 ```
+
 <br/>
 <br/>
  <a name="usage"></a>
@@ -87,6 +89,7 @@ const productSchema = new DB<Product>(
   console.log(deletionStatus);
 })();
 ```
+
 <br/>
 <br/>
 ## Learn <a name="learn"></a>
@@ -159,6 +162,7 @@ And then click Generate Token
 `
 > Example ` createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'`
+
 <br/>
 <br/>
 <a name="CreateMethod"></a>
@@ -180,8 +184,9 @@ console.log(product);
   updatedAt: '2024-03-04T12:35:52.643Z'
   }
   */
-``<br/>`
-``<br/>`
+```
+<br/>
+<br/>
 <a name="FindManyMethod"></a>
 
 > FindMany Method
@@ -206,8 +211,9 @@ console.log(await productSchema.findMany());
   }
 ]
   */
-```<br/>
-```<br/>
+```
+<br/>
+<br/>
  <a name="findFirstMethod"></a>
 
 > findFirst Method
@@ -233,6 +239,7 @@ console.log(await productSchema.findMany());
 ]
   */
 ```
+
 <br/>
 <br/>
 <a name="findByIdAndUpdateMethod"></a>
@@ -266,6 +273,7 @@ Before:
   }
   */
 ```
+
 <br/>
 <br/>
  <a name="findOneAndUpdateMethod"></a>
@@ -299,6 +307,7 @@ Before:
   }
   */
 ```
+
 <br/>
 <br/>
 <a name="findByIdAndDeleteMethod"></a>
@@ -326,11 +335,10 @@ Before:
  Response "Ok"
   */
 ```
-<br/>
-<br/>
-<a name="findOneAndDeleteMethod"></a>
 
-> findOneAndDelete Method
+<br/>
+<br/>
+> findOneAndDelete Method <a name="findOneAndDeleteMethod"></a>
 
 ```typescript
   console.log(
@@ -366,6 +374,7 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+
 <br/>
 <br/>
 ## 📝 License <a name="license"></a>
