@@ -278,11 +278,10 @@ Before:
   */
 ```
 
+ <a name="findOneAndUpdateMethod"></a>
 <br/>
 <br/>
 
- <a name="findOneAndUpdateMethod"></a>
- 
 > findOneAndUpdate Method
 
 ```typescript
@@ -341,9 +340,9 @@ Before:
   */
 ```
 
+<br/>
+<br/>
 > findOneAndDelete Method <a name="findOneAndDeleteMethod"></a>
-<br/>
-<br/>
 
 ```typescript
   console.log(
