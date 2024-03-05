@@ -180,7 +180,7 @@ And then click Generate Token
 </a>
 
 
-> Create Method
+### Create Method
 
 ```typescript
 const product = await productSchema.create({
