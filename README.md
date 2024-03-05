@@ -342,6 +342,7 @@ Before:
 
 <br/>
 <br/>
+
 > findOneAndDelete Method <a name="findOneAndDeleteMethod"></a>
 
 ```typescript
