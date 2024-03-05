@@ -35,17 +35,20 @@
 <br/>
 </a>
 
+
 ## Install
 
 ```sh
 npm install github-gist-db
 ```
 
+<a name="usage">
 <br/>
+<br/>
+</a>
 
-## Usage <a name="usage"></a>
-<br/>
-<br/>
+
+## Usage
 
 ```typescript
 import { DB } from "github-gist-db";
@@ -94,11 +97,13 @@ const productSchema = new DB<Product>(
 
 
 
+<a name="learn">
 <br/>
+<br/>
+</a>
 
-## Learn <a name="learn"></a>
-<br/>
-<br/>
+## Learn 
+
 
 > First you have to define the Schema (the body of your database)
 
@@ -169,9 +174,11 @@ And then click Generate Token
 > Example ` createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'`
 
-<a name="CreateMethod"></a>
+<a name="CreateMethod">
 <br/>
 <br/>
+</a>
+
 
 > Create Method
 
@@ -191,9 +198,11 @@ console.log(product);
   }
   */
 ```
-<a name="FindManyMethod"></a>
+<a name="FindManyMethod">
 <br/>
 <br/>
+</a>
+
 
 > FindMany Method
 
@@ -218,9 +227,11 @@ console.log(await productSchema.findMany());
 ]
   */
 ```
- <a name="findFirstMethod"></a>
+ <a name="findFirstMethod">
+ <br/>
 <br/>
-<br/>
+ </a>
+
 
 > findFirst Method
 
@@ -246,9 +257,11 @@ console.log(await productSchema.findMany());
   */
 ```
 
-<a name="findByIdAndUpdateMethod"></a>
+<a name="findByIdAndUpdateMethod">
 <br/>
 <br/>
+</a>
+
 
 > findByIdAndUpdate Method
 
@@ -280,9 +293,11 @@ Before:
   */
 ```
 
- <a name="findOneAndUpdateMethod"></a>
+ <a name="findOneAndUpdateMethod">
+ <br/>
 <br/>
-<br/>
+ </a>
+
 
 > findOneAndUpdate Method
 
@@ -314,9 +329,11 @@ Before:
   */
 ```
 
-<a name="findByIdAndDeleteMethod"></a>
+<a name="findByIdAndDeleteMethod">
 <br/>
 <br/>
+</a>
+
 
 > findByIdAndDelete Method
 
@@ -342,10 +359,12 @@ Before:
   */
 ```
 
-<br/>
-<br/>
 
-> findOneAndDelete Method <a name="findOneAndDeleteMethod"></a>
+
+> findOneAndDelete Method <a name="findOneAndDeleteMethod">
+<br/>
+<br/>
+</a>
 
 ```typescript
   console.log(
@@ -382,9 +401,11 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 Give a ⭐️ if this project helped you!
 
-## 📝 License <a name="license"></a>
+## 📝 License <a name="license">
 <br/>
 <br/>
+</a>
+
 
 Copyright © 2024 [Amer Eltahawy](https://github.com/tahawy111).<br />
 This project is [MIT](https://github.com/tahawy111/github-gist-db/LICENSE) licensed.
