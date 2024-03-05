@@ -278,9 +278,9 @@ Before:
   */
 ```
 
+<br/>
+<br/>
  <a name="findOneAndUpdateMethod"></a>
-<br/>
-<br/>
 
 > findOneAndUpdate Method
 
