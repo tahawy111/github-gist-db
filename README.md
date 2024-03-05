@@ -23,7 +23,7 @@
     * [FindFirst Method](#findFirstMethod)
     * [FindByIdAndUpdate Method](#findByIdAndUpdateMethod)
     * [FindOneAndUpdate Method](#findOneAndUpdateMethod)
-    * [FindByIdAndDelete Method](fFindByIdAndDeleteMethod)
+    * [FindByIdAndDelete Method](findByIdAndDeleteMethod)
     * [FindOneAndDelete Method](#findOneAndDeleteMethod)
 * [Author](#author)
 * [ Contributing](#contributing)
