@@ -35,6 +35,7 @@
 </br>
 </br>
 <a name="installation"></a>
+</br>
 
 
 ## Install
@@ -49,6 +50,7 @@ npm install github-gist-db
 </br>
 </br>
  <a name="usage"></a>
+</br>
 
 
 ## Usage
@@ -104,6 +106,7 @@ const productSchema = new DB<Product>(
 </br>
 </br>
 ## Learn <a name="learn"></a>
+</br>
 
 
 > First you have to define the Schema (the body of your database)
@@ -181,6 +184,7 @@ And then click Generate Token
 </br>
 </br>
 <a name="CreateMethod"></a>
+</br>
 
 
 > Create Method
@@ -238,6 +242,7 @@ console.log(await productSchema.findMany());
 </br>
 </br>
  <a name="findFirstMethod"></a>
+</br>
 
 
 > findFirst Method
@@ -270,6 +275,7 @@ console.log(await productSchema.findMany());
 </br>
 </br>
 <a name="findByIdAndUpdateMethod"></a>
+</br>
 
 
 > findByIdAndUpdate Method
@@ -308,6 +314,7 @@ Before:
 </br>
 </br>
  <a name="findOneAndUpdateMethod"></a>
+</br>
 
 
 > findOneAndUpdate Method
@@ -346,6 +353,7 @@ Before:
 </br>
 </br>
 <a name="findByIdAndDeleteMethod"></a>
+</br>
 
 
 > findByIdAndDelete Method
@@ -378,6 +386,7 @@ Before:
 </br>
 </br>
 <a name="findOneAndDeleteMethod"></a>
+</br>
 
 
 > findOneAndDelete Method
@@ -423,6 +432,7 @@ Give a ⭐️ if this project helped you!
 </br>
 </br>
 ## 📝 License <a name="license"></a>
+</br>
 
 
 Copyright © 2024 [Amer Eltahawy](https://github.com/tahawy111).<br />
