@@ -18,7 +18,7 @@
 * [Installation](#installation)
 * [Usage](#usage)
 * [Learn](#learn)
-    * [Create Method](#createMethod)
+    * [Create Method](#create-method)
     * [FindMany Method](#findManyMethod)
     * [FindFirst Method](#findFirstMethod)
     * [FindByIdAndUpdate Method](#findByIdAndUpdateMethod)
@@ -36,7 +36,7 @@
 npm install github-gist-db
 ```
 
-## [Create Method](#createMethod)
+### [Usage](#usage)
 
 ```typescript
 import { DB } from "github-gist-db";
@@ -61,6 +61,9 @@ const productSchema = new DB<Product>(
     timeStamps: true,
   }
 );
+
+
+
 
 // Example usage
 (async () => {
@@ -157,7 +160,7 @@ And then click Generate Token
 > Example ` createdAt: '2024-03-04T12:35:52.641Z',
   updatedAt: '2024-03-04T12:35:52.643Z'`
 
-### [Create Method](#createMethod)
+### [Create Method](#create-method)
 
 ```typescript
 const product = await productSchema.create({
