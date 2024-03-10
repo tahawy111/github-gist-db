@@ -1,12 +1,12 @@
 <h1 align="center">Welcome to Github-Gist-DB 👋</h1>
-<p>
+<!-- <p>
   <a href="https://www.npmjs.com/package/github-gist-db" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/github-gist-db.svg">
   </a>
   <a href="" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
-</p>
+</p> -->
 
 > Unlimited GitHub Gist DB is a lightweight NoSQL database package for Node.js, designed to store JSON data in GitHub Gists, providing CRUD operations and more.
 > Because it depends on the gists and Github says that you can create an unlimted gists and unlimited requests 🤑 for free.
