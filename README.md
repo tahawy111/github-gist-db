@@ -20,11 +20,7 @@
 * [Learn](#learn)
     * [Create Method](#create-method)
     * [FindMany Method](#find-many-method)
-    * [FindFirst Method](#find-first-method)
-    * [FindByIdAndUpdate Method](#find-by-id-and-update-method)
-    * [FindOneAndUpdate Method](#find-one-and-update-method)
-    * [FindByIdAndDelete Method](#find-byId-and-delete-method)
-    * [FindOneAndDelete Method](#find-one-and-delete-method)
+
 * [Author](#author)
 * [ Contributing](#contributing)
 * [Show your support](#show-your-support)
