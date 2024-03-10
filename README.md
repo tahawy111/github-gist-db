@@ -21,10 +21,10 @@
     * [Create Method](#create-method)
     * [Find Many Method](#findmany-method)
     * [FindFirst Method](#findfirst-method)
-    * [FindByIdAndUpdate Method](#find-by-id-and-update-method)
-    * [FindOneAndUpdate Method](#find-one-and-update-method)
-    * [FindByIdAndDelete Method](#find-byId-and-delete-method)
-    * [FindOneAndDelete Method](#find-one-and-delete-method)
+    * [FindByIdAndUpdate Method](#findbyidandupdate-method)
+    * [FindOneAndUpdate Method](#findoneandupdate-method)
+    * [FindByIdAndDelete Method](#findbyidanddelete-method)
+    * [FindOneAndDelete Method](#findoneanddelete-method)
 * [Author](#author)
 * [ Contributing](#contributing)
 * [Show your support](#show-your-support)
@@ -228,7 +228,7 @@ console.log(await productSchema.findMany());
 ```
 
 
-### [FindByIdAndUpdate Method](#find-by-id-and-update-method)
+### [FindByIdAndUpdate Method](#findbyidandupdate-method)
 
 ```typescript
 console.log(
@@ -259,7 +259,7 @@ Before:
 ```
 
 
-### [FindOneAndUpdate Method](#find-one-and-update-method)
+### [FindOneAndUpdate Method](#findoneandupdate-method)
 
 ```typescript
 console.log(
@@ -290,7 +290,7 @@ Before:
 ```
 
 
-### [FindByIdAndDelete Method](#find-byId-and-delete-method)
+### [FindByIdAndDelete Method](#findbyidanddelete-method)
 
 ```typescript
 console.log(
@@ -316,7 +316,7 @@ Before:
 
 
 
-### [FindOneAndDelete Method](#find-one-and-delete-method)
+### [FindOneAndDelete Method](#findoneanddelete-method)
 <br/>
 <br/>
 </a>
