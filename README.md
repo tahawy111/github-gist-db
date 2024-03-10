@@ -19,8 +19,12 @@
 * [Usage](#usage)
 * [Learn](#learn)
     * [Create Method](#create-method)
-    * [FindMany Method](#find-many-method)
-
+    * [Find Many Method](#findmany-method)
+    * [FindFirst Method](#find-first-method)
+    * [FindByIdAndUpdate Method](#find-by-id-and-update-method)
+    * [FindOneAndUpdate Method](#find-one-and-update-method)
+    * [FindByIdAndDelete Method](#find-byId-and-delete-method)
+    * [FindOneAndDelete Method](#find-one-and-delete-method)
 * [Author](#author)
 * [ Contributing](#contributing)
 * [Show your support](#show-your-support)
@@ -176,7 +180,7 @@ console.log(product);
 ```
 
 
-### [FindMany Method](#find-many-method)
+### [FindMany Method](#findmany-method)
 
 ```typescript
 console.log(await productSchema.findMany());
