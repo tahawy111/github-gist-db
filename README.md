@@ -1,8 +1,8 @@
 <h1 align="center">Welcome to Github-Gist-DB 👋</h1>
 <p>
 
-  <a href="https://www.npmjs.com/package/github-gist-db" target="_blank">
-    ![Static Badge](https://img.shields.io/badge/v1.0.6-gists?style=flat&logo=npm&label=npm&labelColor=blue&color=gray)
+  <a href="" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/v1.0.6-gists?style=flat&logo=npm&label=npm&labelColor=blue&color=gray" />
   </a>
   
   <a href="" target="_blank">
