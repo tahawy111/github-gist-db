@@ -17,7 +17,7 @@
 
 # Table of Contents
 
-* [Installation](#installation)
+* [Installation](#install)
 * [Usage](#usage)
 * [Learn](#learn)
     * [Create Method](#create-method)
@@ -32,7 +32,7 @@
 * [Show your support](#show-your-support)
 * [ License](#license)
 
-## [Install](#installation)
+## [Install](#install)
 
 ```sh
 npm install github-gist-db
