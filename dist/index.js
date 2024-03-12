@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DB = void 0;
 // Import necessary libraries
 const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -305,23 +306,29 @@ class DB {
         });
     }
 }
-const productSchema = new DB({
-    name: "String",
-    price: "Number",
-}, {
-    githubToken: process.env.GITHUB_ACCESS_TOKEN,
-    schemaName: "productSchema",
-    projectName: "test",
-    gistId: "48ec463b54be5973729a108297860555",
-    timeStamps: true,
-});
-(() => __awaiter(void 0, void 0, void 0, function* () {
-    // const product = await productSchema.create({
-    //   name: "laptop lenovo",
-    //   price: 500,
-    // });
-    // console.log(product);
-    console.log(yield productSchema.findOneAndDelete({ id: "479a474b-a668-4407-8543-adcae24d9f91" }));
-    // console.log(await productSchema.findMany());
-    // console.log(await productSchema.PrepareGistBeforeRequestTheFile());
-}))();
+exports.DB = DB;
+// const productSchema = new DB(
+//   {
+//     name: "String",
+//     price: "Number",
+//   },
+//   {
+//     githubToken: process.env.GITHUB_ACCESS_TOKEN!,
+//     schemaName: "productSchema",
+//     projectName: "test",
+//     gistId: "48ec463b54be5973729a108297860555",
+//     timeStamps: true,
+//   }
+// );
+// (async () => {
+//   // const product = await productSchema.create({
+//   //   name: "laptop lenovo",
+//   //   price: 500,
+//   // });
+//   // console.log(product);
+//   console.log(
+//     await productSchema.findOneAndDelete({id:"479a474b-a668-4407-8543-adcae24d9f91"})
+//   );
+//   // console.log(await productSchema.findMany());
+//   // console.log(await productSchema.PrepareGistBeforeRequestTheFile());
+// })();
