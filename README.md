@@ -43,14 +43,9 @@ npm install github-gist-database
 ```typescript
 import { DB } from "github-gist-database";
 
-// Define your schema
-interface Product {
-  name: string;
-  price: number;
-}
 
-// Initialize the database
-const productSchema = new DB<Product>(
+// Define your Schema
+const productSchema = new DB(
   {
     name: "String",
     price: "Number",
