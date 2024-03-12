@@ -2,7 +2,7 @@
 <p>
 
   <a href="" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/badge/v1.0.7-gists?style=flat&logo=npm&label=npm&labelColor=blue&color=gray" />
+    <img alt="License: MIT" src="https://img.shields.io/badge/v1.0.14-gists?style=flat&logo=npm&label=npm&labelColor=blue&color=gray" />
   </a>
   
   <a href="" target="_blank">
