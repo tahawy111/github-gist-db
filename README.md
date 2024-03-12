@@ -96,7 +96,7 @@ const productSchema = new DB<Product>(
 > First you have to define the Schema (the body of your database)
 
 ```typescript
-import { DB } from "github-gist-db";
+import { DB } from "github-gist-database";
 
 // Define your schema
 interface Product {
