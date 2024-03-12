@@ -35,13 +35,13 @@
 ## [Install](#install)
 
 ```sh
-npm install github-gist-db
+npm install github-gist-database
 ```
 
 ### [Usage](#usage)
 
 ```typescript
-import { DB } from "github-gist-db";
+import { DB } from "github-gist-database";
 
 // Define your schema
 interface Product {
