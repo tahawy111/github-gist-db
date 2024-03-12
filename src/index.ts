@@ -394,29 +394,31 @@ class DB<T extends SchemaTypes> {
   }
 }
 
-const productSchema = new DB(
-  {
-    name: "String",
-    price: "Number",
-  },
-  {
-    githubToken: process.env.GITHUB_ACCESS_TOKEN!,
-    schemaName: "productSchema",
-    projectName: "test",
-    gistId: "48ec463b54be5973729a108297860555",
-    timeStamps: true,
-  }
-);
+export { DB };
 
-(async () => {
-  // const product = await productSchema.create({
-  //   name: "laptop lenovo",
-  //   price: 500,
-  // });
-  // console.log(product);
-  console.log(
-    await productSchema.findOneAndDelete({id:"479a474b-a668-4407-8543-adcae24d9f91"})
-  );
-  // console.log(await productSchema.findMany());
-  // console.log(await productSchema.PrepareGistBeforeRequestTheFile());
-})();
+// const productSchema = new DB(
+//   {
+//     name: "String",
+//     price: "Number",
+//   },
+//   {
+//     githubToken: process.env.GITHUB_ACCESS_TOKEN!,
+//     schemaName: "productSchema",
+//     projectName: "test",
+//     gistId: "48ec463b54be5973729a108297860555",
+//     timeStamps: true,
+//   }
+// );
+
+// (async () => {
+//   // const product = await productSchema.create({
+//   //   name: "laptop lenovo",
+//   //   price: 500,
+//   // });
+//   // console.log(product);
+//   console.log(
+//     await productSchema.findOneAndDelete({id:"479a474b-a668-4407-8543-adcae24d9f91"})
+//   );
+//   // console.log(await productSchema.findMany());
+//   // console.log(await productSchema.PrepareGistBeforeRequestTheFile());
+// })();
